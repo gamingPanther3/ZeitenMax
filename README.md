@@ -1,6 +1,7 @@
 # ZeitenMax
 
 ZeitenMax ist eine umfassende Anwendung zur Zeitverwaltung. Sie bietet Funktionen wie die Anzeige der aktuellen Uhrzeit, eine Stoppuhr, einen Timer und einen Wecker.
+(Bitte beachten Sie das die App sich noch in Entwicklung befindet)
 
 ## Funktionen
 
