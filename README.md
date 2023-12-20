@@ -1,0 +1,3 @@
+# ZeitenMax
+
+Eine fortschrittliche Stopuhr.
