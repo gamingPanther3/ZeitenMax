@@ -2,15 +2,24 @@ package com.mlprograms.zeitenmax;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.content.ContextCompat;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -56,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
                 checkDarkmodeSetting();
             }
         }
+        checkDarkmodeSetting();
     }
 
     /**
@@ -83,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
             dataManager.saveToJSON("settingReleaseNotesSwitch", true, getApplicationContext());
         }
         setContentView(R.layout.activity_main);
-        checkDarkmodeSetting();
+        //checkDarkmodeSetting();
         setUpListeners();
     }
 
@@ -128,7 +138,7 @@ public class MainActivity extends AppCompatActivity {
      * Switches to the settings activity.
      * It creates a new SettingsActivity, sets the main activity context, and starts the activity.
      */
-    public void switchToSettingsAction() {
+    private void switchToSettingsAction() {
         SettingsActivity.setMainActivityContext(this);
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
@@ -138,11 +148,155 @@ public class MainActivity extends AppCompatActivity {
      * Checks the dark mode setting.
      * It switches the display mode based on the current night mode.
      */
-    public void checkDarkmodeSetting() {
+    private void checkDarkmodeSetting() {
         switchDisplayMode(getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK);
     }
 
+    @SuppressLint("UseCompatLoadingForDrawables")
     private void switchDisplayMode(int currentNightMode) {
-        // check if darkmode and set application to darkmode
+        final String mode = dataManager.readFromJSON("selectedSpinnerSetting", getApplicationContext());
+        final String trueDarkmode = dataManager.readFromJSON("settingsTrueDarkMode", getApplicationContext());
+
+        TextView stopwatch = findViewById(R.id.stopwatch);
+        TextView timer = findViewById(R.id.timer);
+        TextView alarm = findViewById(R.id.alarm);
+        TextView settings = findViewById(R.id.settings);
+
+        int newColorBTNBackgroundAccent = 0;
+        int newColorBTNForegroundAccent = 0;
+
+        switch (mode) {
+            case "System":
+                switch (currentNightMode) {
+                    case Configuration.UI_MODE_NIGHT_YES:
+                        if (stopwatch != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_av_timer_24_light);
+                            stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (timer != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_av_timer_24_light);
+                            timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (alarm != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_alarm_24_light);
+                            alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (settings != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_settings_24_light);
+                            settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+
+                        if (trueDarkmode != null && trueDarkmode.equals("true")) {
+                            newColorBTNForegroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.darkmode_white);
+                            newColorBTNBackgroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.darkmode_black);
+
+                            if (stopwatch != null) {
+                                Drawable icon;
+                                icon = getDrawable(R.drawable.baseline_av_timer_24_true_darkmode);
+                                stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
+                            if (timer != null) {
+                                Drawable icon = getDrawable(R.drawable.baseline_av_timer_24_true_darkmode);
+                                timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
+                            if (alarm != null) {
+                                Drawable icon = getDrawable(R.drawable.baseline_alarm_24_true_darkmode);
+                                alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
+                            if (settings != null) {
+                                Drawable icon = getDrawable(R.drawable.baseline_settings_24_true_darkmode);
+                                settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
+                        } else if (trueDarkmode != null && trueDarkmode.equals("false")) {
+                            newColorBTNForegroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.white);
+                            newColorBTNBackgroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.black);
+                        }
+                        break;
+                    case Configuration.UI_MODE_NIGHT_NO:
+                        newColorBTNBackgroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.white);
+                        newColorBTNForegroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.black);
+
+                        if (stopwatch != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_av_timer_24);
+                            stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (timer != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_av_timer_24);
+                            timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (alarm != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_alarm_24);
+                            alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (settings != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_settings_24);
+                            settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        break;
+                }
+                break;
+            case "Light":
+            case "Dark":
+                break;
+
+        }
+
+        changeTextViewColors(findViewById(R.id.activity_main), newColorBTNForegroundAccent, newColorBTNBackgroundAccent);
+        changeButtonColors(findViewById(R.id.activity_main), newColorBTNForegroundAccent, newColorBTNBackgroundAccent);
+    }
+
+    /**
+     * This method is used to change the colors of the buttons in a given layout.
+     *
+     * @param layout The ViewGroup whose Button children should have their colors changed. This can be any layout containing Buttons.
+     * @param foregroundColor The color to be set as the text color of the Buttons. This should be a resolved color, not a resource id.
+     * @param backgroundColor The color to be set as the background color of the Buttons and the layout. This should be a resolved color, not a resource id.
+     */
+    private void changeButtonColors(ViewGroup layout, int foregroundColor, int backgroundColor) {
+        if (layout != null) {
+            for (int i = 0; i < layout.getChildCount(); i++) {
+                View v = layout.getChildAt(i);
+                v.setBackgroundColor(backgroundColor);
+
+                // If the child is a Button, change the foreground and background colors
+                if (v instanceof Button) {
+                    ((Button) v).setTextColor(foregroundColor);
+                    v.setBackgroundColor(backgroundColor);
+                }
+                // If the child itself is a ViewGroup (e.g., a layout), call the function recursively
+                else if (v instanceof ViewGroup) {
+                    changeButtonColors((ViewGroup) v, foregroundColor, backgroundColor);
+                }
+            }
+        }
+    }
+
+    /**
+     * This method is used to change the colors of the TextViews in a given layout.
+     *
+     * @param layout The ViewGroup whose TextView children should have their colors changed. This can be any layout containing TextViews.
+     * @param foregroundColor The color to be set as the text color of the TextViews. This should be a resolved color, not a resource id.
+     * @param backgroundColor The color to be set as the background color of the TextViews and the layout. This should be a resolved color, not a resource id.
+     */
+    private void changeTextViewColors(ViewGroup layout, int foregroundColor, int backgroundColor) {
+        if (layout != null) {
+            for (int i = 0; i < layout.getChildCount(); i++) {
+                View v = layout.getChildAt(i);
+                v.setBackgroundColor(backgroundColor);
+                System.out.println(v);
+
+                // If the child is a TextView, change the foreground and background colors
+                if (v instanceof TextView) {
+                    ((TextView) v).setTextColor(foregroundColor);
+                    v.setBackgroundColor(backgroundColor);
+                }
+                // If the child itself is a ViewGroup (e.g., a layout), call the function recursively
+                else if (v instanceof ViewGroup) {
+                    changeTextViewColors((ViewGroup) v, foregroundColor, backgroundColor);
+                }
+            }
+        }
     }
 }
