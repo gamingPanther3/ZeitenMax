@@ -5,5 +5,57 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/stopwatch"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="97dp"
+        android:layout_height="54dp"
+        android:layout_weight="1"
+        android:background="@color/colorBTNBackgroundAccent"
+        android:tag="4"
+        android:textSize="@dimen/calcButtonTextSize"
+        tools:layout_editor_absoluteX="216dp"
+        tools:layout_editor_absoluteY="677dp" />
+
+    <Button
+        android:id="@+id/timer"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="97dp"
+        android:layout_height="54dp"
+        android:layout_weight="1"
+        android:background="@color/colorBTNBackgroundAccent"
+        android:tag="4"
+        android:text="@string/FourButton"
+        android:textColor="@color/colorBTNForegroundAccent"
+        android:textSize="@dimen/calcButtonTextSize"
+        tools:layout_editor_absoluteX="107dp"
+        tools:layout_editor_absoluteY="677dp" />
+
+    <Button
+        android:id="@+id/alarm"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="97dp"
+        android:layout_height="54dp"
+        android:layout_weight="1"
+        android:background="@color/colorBTNBackgroundAccent"
+        android:tag="4"
+        android:text="@string/FourButton"
+        android:textColor="@color/colorBTNForegroundAccent"
+        android:textSize="@dimen/calcButtonTextSize"
+        tools:layout_editor_absoluteY="677dp" />
+
+    <Button
+        android:id="@+id/settings"
+        style="?android:attr/buttonBarButtonStyle"
+        android:layout_width="97dp"
+        android:layout_height="54dp"
+        android:layout_weight="1"
+        android:background="@color/colorBTNBackgroundAccent"
+        android:tag="4"
+        android:text="@string/FourButton"
+        android:textColor="@color/colorBTNForegroundAccent"
+        android:textSize="@dimen/calcButtonTextSize"
+        tools:layout_editor_absoluteX="320dp"
+        tools:layout_editor_absoluteY="677dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
