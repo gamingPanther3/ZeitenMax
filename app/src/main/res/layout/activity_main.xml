@@ -15,10 +15,10 @@
         <Button
             android:id="@+id/stopwatch"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_height="54dp"
+            android:layout_height="@dimen/taskbar_button_height"
             android:layout_weight="1"
             android:background="@color/colorBTNBackgroundAccent"
-            android:textSize="@dimen/calcButtonTextSize" />
+            android:textSize="@dimen/taskbar_button_text_size" />
 
         <Button
             android:id="@+id/timer"
@@ -26,7 +26,7 @@
             android:layout_height="54dp"
             android:layout_weight="1"
             android:background="@color/colorBTNBackgroundAccent"
-            android:textSize="@dimen/calcButtonTextSize" />
+            android:textSize="@dimen/taskbar_button_text_size" />
 
         <Button
             android:id="@+id/alarm"
@@ -34,7 +34,7 @@
             android:layout_height="54dp"
             android:layout_weight="1"
             android:background="@color/colorBTNBackgroundAccent"
-            android:textSize="@dimen/calcButtonTextSize" />
+            android:textSize="@dimen/taskbar_button_text_size" />
 
         <Button
             android:id="@+id/settings"
@@ -42,6 +42,6 @@
             android:layout_height="54dp"
             android:layout_weight="1"
             android:background="@color/colorBTNBackgroundAccent"
-            android:textSize="@dimen/calcButtonTextSize" />
+            android:textSize="@dimen/taskbar_button_text_size" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
