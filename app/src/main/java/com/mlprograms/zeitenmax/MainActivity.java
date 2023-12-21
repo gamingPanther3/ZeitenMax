@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         if (showPatNot != null && disablePatNotTemp != null) {
             if (showPatNot.equals("true") && disablePatNotTemp.equals("false")) {
                 setContentView(R.layout.patchnotes);
+                setUpListeners();
                 checkDarkmodeSetting();
             }
         }
@@ -63,21 +64,6 @@ public class MainActivity extends AppCompatActivity {
     private void setUpListeners() {
         setButtonListener(R.id.settings, this::switchToSettingsAction);
         setButtonListener(R.id.okay_button, this::patchNotesOkayButtonAction);
-    }
-
-    /**
-     * Sets up the listener for all number buttons
-     *
-     * @param buttonId The ID of the button to which the listener is to be set.
-     * @param action The action which belongs to the button.
-     */
-    private void setButtonListener(int buttonId, Runnable action) {
-        Button btn = findViewById(buttonId);
-        if(btn != null) {
-            btn.setOnClickListener(v -> {
-                action.run();
-            });
-        }
     }
 
     /**
@@ -99,6 +85,19 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         checkDarkmodeSetting();
         setUpListeners();
+    }
+
+    /**
+     * Sets up the listener for all number buttons
+     *
+     * @param buttonId The ID of the button to which the listener is to be set.
+     * @param action The action which belongs to the button.
+     */
+    private void setButtonListener(int buttonId, Runnable action) {
+        Button btn = findViewById(buttonId);
+        if(btn != null) {
+            btn.setOnClickListener(v -> action.run());
+        }
     }
 
     protected void onDestroy() {

@@ -23,8 +23,8 @@ import androidx.core.content.ContextCompat;
 /**
  * SettingsActivity
  * @author Max Lemberg
- * @version 1.0.0
- * @date 03.12.2023
+ * @version 1.0.5
+ * @date 18.12.2023
  */
 public class SettingsActivity extends AppCompatActivity {
 
