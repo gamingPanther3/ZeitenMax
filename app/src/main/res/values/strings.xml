@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">ZeitenMax</string>
+
+    <string-array name="setting_display_mode_options">
+        <item>Systemstandard</item>
+        <item>Tageslichtmodus</item>
+        <item>Dunkelmodus</item>
+    </string-array>
+
+    <string name="mode_prompt">Wähle einen Modus aus</string>
 </resources>
