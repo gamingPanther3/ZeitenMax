@@ -4,7 +4,7 @@ plugins {
 
 android {
     namespace = "com.mlprograms.zeitenmax"
-    compileSdk = 33
+    compileSdk = 34
 
     defaultConfig {
         applicationId = "com.mlprograms.zeitenmax"
@@ -29,6 +29,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
     }
+    buildToolsVersion = "33.0.0"
 }
 
 dependencies {
