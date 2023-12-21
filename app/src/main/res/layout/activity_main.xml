@@ -18,8 +18,10 @@
             android:layout_height="@dimen/taskbar_button_height"
             android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:text="Stoppuhr"
+            android:textSize="@dimen/taskbar_button_text_size"
             android:background="@color/colorBTNBackgroundAccent"
-            android:textSize="@dimen/taskbar_button_text_size" />
+            android:drawableTop="@drawable/baseline_alarm_24" />
 
         <Button
             android:id="@+id/timer"
@@ -27,27 +29,31 @@
             android:layout_height="@dimen/taskbar_button_height"
             android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:text="Timer"
+            android:textSize="@dimen/taskbar_button_text_size"
             android:background="@color/colorBTNBackgroundAccent"
-            android:textSize="@dimen/taskbar_button_text_size" />
-
+            android:drawableTop="@drawable/baseline_alarm_24" />
         <Button
             android:id="@+id/alarm"
             style="?android:attr/buttonBarButtonStyle"
             android:layout_height="@dimen/taskbar_button_height"
             android:layout_width="wrap_content"
             android:layout_weight="1"
+            android:text="Wecker"
+            android:textSize="@dimen/taskbar_button_text_size"
             android:background="@color/colorBTNBackgroundAccent"
-            android:textSize="@dimen/taskbar_button_text_size" />
+            android:drawableTop="@drawable/baseline_alarm_24" />
 
         <Button
             android:id="@+id/settings"
             style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
+            android:layout_width="92dp"
             android:layout_height="@dimen/taskbar_button_height"
             android:layout_weight="1"
+            android:text="Einstellungen"
+            android:textSize="@dimen/taskbar_button_text_size"
             android:background="@color/colorBTNBackgroundAccent"
-            android:foreground="@drawable/baseline_settings_24"
-            android:textSize="@dimen/taskbar_button_text_size" />
+            android:drawableTop="@drawable/baseline_settings_24" />
 
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>
