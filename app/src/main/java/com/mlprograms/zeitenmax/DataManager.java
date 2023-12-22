@@ -2,27 +2,23 @@ package com.mlprograms.zeitenmax;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.TextView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 import java.nio.file.Files;
 
 /**
  * DataManager
  * @author Max Lemberg
- * @version 1.0.3
- * @date 18.12.2023
+ * @version 1.0.4
+ * @date 22.12.2023
  *
  *  | Names                            | Values                   | Context                              |
  *  |----------------------------------|--------------------------|--------------------------------------|
@@ -41,9 +37,6 @@ public class DataManager {
 
     // Define the names of the files
     private static final String JSON_FILE = "settings.json";
-    private static final String FILE_NAME1 = "history.txt";
-    private static final String FILE_NAME2 = "calculate.txt";
-    private static final String FILE_NAME3 = "result.txt";
 
     /**
      * This constructor is used to create a DataManager object for the MainActivity.
@@ -215,7 +208,7 @@ public class DataManager {
      * This method checks if a file exists and creates it if it doesn't.
      */
     public void checkAndCreateFile() {
-        File file = new File(mainActivity.getFilesDir(), FILE_NAME1);
+        File file = new File(mainActivity.getFilesDir(), JSON_FILE);
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -224,7 +217,7 @@ public class DataManager {
             }
         }
         try {
-            FileInputStream fileIn = mainActivity.openFileInput(FILE_NAME1);
+            FileInputStream fileIn = mainActivity.openFileInput(JSON_FILE);
             InputStreamReader inputReader = new InputStreamReader(fileIn);
             char[] inputBuffer = new char[100];
             int charRead;
