@@ -69,6 +69,10 @@ public class MainActivity extends AppCompatActivity {
      */
     private void setUpListeners() {
         setButtonListener(R.id.settings, this::switchToSettingsAction);
+        setButtonListener(R.id.stopwatch, this::switchToStopwatchAction);
+        setButtonListener(R.id.timer, this::switchToTimerAction);
+        setButtonListener(R.id.alarm, this::switchToAlarmAction);
+
         setButtonListener(R.id.okay_button, this::patchNotesOkayButtonAction);
     }
 
@@ -134,19 +138,20 @@ public class MainActivity extends AppCompatActivity {
      * Switches to the stopwatch activity.
      * It creates a new StopwatchActivity, sets the main activity context, and starts the activity.
      */
-    private void switchToStopwatchActivity() {
-        SettingsActivity.setMainActivityContext(this);
+    private void switchToStopwatchAction() {
+        StopwatchActivity.setMainActivityContext(this);
         Intent intent = new Intent(this, StopwatchActivity.class);
         startActivity(intent);
     }
+
 
     /**
      * Switches to the timer activity.
      * It creates a new TimerActivity, sets the main activity context, and starts the activity.
      */
     private void switchToTimerAction() {
-        SettingsActivity.setMainActivityContext(this);
-        Intent intent = new Intent(this, SettingsActivity.class);
+        TimerActivity.setMainActivityContext(this);
+        Intent intent = new Intent(this, TimerActivity.class);
         startActivity(intent);
     }
 
@@ -155,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
      * It creates a new AlarmActivity, sets the main activity context, and starts the activity.
      */
     private void switchToAlarmAction() {
-        SettingsActivity.setMainActivityContext(this);
-        Intent intent = new Intent(this, SettingsActivity.class);
+        AlarmActivity.setMainActivityContext(this);
+        Intent intent = new Intent(this, AlarmActivity.class);
         startActivity(intent);
     }
 
@@ -197,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
                     case Configuration.UI_MODE_NIGHT_YES:
                         if (stopwatch != null) {
                             Drawable icon;
-                            icon = getDrawable(R.drawable.baseline_av_timer_24_light);
+                            icon = getDrawable(R.drawable.baseline_access_time_24_light);
                             stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                         }
                         if (timer != null) {
@@ -219,7 +224,7 @@ public class MainActivity extends AppCompatActivity {
 
                             if (stopwatch != null) {
                                 Drawable icon;
-                                icon = getDrawable(R.drawable.baseline_av_timer_24_true_darkmode);
+                                icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
                                 stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                             }
                             if (timer != null) {
@@ -245,7 +250,7 @@ public class MainActivity extends AppCompatActivity {
 
                         if (stopwatch != null) {
                             Drawable icon;
-                            icon = getDrawable(R.drawable.baseline_av_timer_24);
+                            icon = getDrawable(R.drawable.baseline_access_time_24);
                             stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                         }
                         if (timer != null) {
@@ -269,7 +274,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (stopwatch != null) {
                     Drawable icon;
-                    icon = getDrawable(R.drawable.baseline_av_timer_24);
+                    icon = getDrawable(R.drawable.baseline_access_time_24);
                     stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                 }
                 if (timer != null) {
@@ -288,7 +293,7 @@ public class MainActivity extends AppCompatActivity {
             case "Dark":
                 if (stopwatch != null) {
                     Drawable icon;
-                    icon = getDrawable(R.drawable.baseline_av_timer_24_light);
+                    icon = getDrawable(R.drawable.baseline_access_time_24_light);
                     stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                 }
                 if (timer != null) {
@@ -310,7 +315,7 @@ public class MainActivity extends AppCompatActivity {
 
                     if (stopwatch != null) {
                         Drawable icon;
-                        icon = getDrawable(R.drawable.baseline_av_timer_24_true_darkmode);
+                        icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
                         stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                     }
                     if (timer != null) {
