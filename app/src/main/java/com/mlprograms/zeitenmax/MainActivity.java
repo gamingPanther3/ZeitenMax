@@ -131,6 +131,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * Switches to the stopwatch activity.
+     * It creates a new StopwatchActivity, sets the main activity context, and starts the activity.
+     */
+    private void switchToStopwatchActivity() {
+        SettingsActivity.setMainActivityContext(this);
+        Intent intent = new Intent(this, StopwatchActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Switches to the timer activity.
+     * It creates a new TimerActivity, sets the main activity context, and starts the activity.
+     */
+    private void switchToTimerAction() {
+        SettingsActivity.setMainActivityContext(this);
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Switches to the alarm activity.
+     * It creates a new AlarmActivity, sets the main activity context, and starts the activity.
+     */
+    private void switchToAlarmAction() {
+        SettingsActivity.setMainActivityContext(this);
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
+
+    /**
      * Switches to the settings activity.
      * It creates a new SettingsActivity, sets the main activity context, and starts the activity.
      */
@@ -234,7 +264,71 @@ public class MainActivity extends AppCompatActivity {
                 }
                 break;
             case "Light":
+                newColorBTNBackgroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.white);
+                newColorBTNForegroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.black);
+
+                if (stopwatch != null) {
+                    Drawable icon;
+                    icon = getDrawable(R.drawable.baseline_av_timer_24);
+                    stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (timer != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_av_timer_24);
+                    timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (alarm != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_alarm_24);
+                    alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (settings != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_settings_24);
+                    settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                break;
             case "Dark":
+                if (stopwatch != null) {
+                    Drawable icon;
+                    icon = getDrawable(R.drawable.baseline_av_timer_24_light);
+                    stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (timer != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_av_timer_24_light);
+                    timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (alarm != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_alarm_24_light);
+                    alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (settings != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_settings_24_light);
+                    settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+
+                if (trueDarkmode != null && trueDarkmode.equals("true")) {
+                    newColorBTNForegroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.darkmode_white);
+                    newColorBTNBackgroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.darkmode_black);
+
+                    if (stopwatch != null) {
+                        Drawable icon;
+                        icon = getDrawable(R.drawable.baseline_av_timer_24_true_darkmode);
+                        stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (timer != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_av_timer_24_true_darkmode);
+                        timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (alarm != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_alarm_24_true_darkmode);
+                        alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (settings != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_settings_24_true_darkmode);
+                        settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                } else if (trueDarkmode != null && trueDarkmode.equals("false")) {
+                    newColorBTNForegroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.white);
+                    newColorBTNBackgroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.black);
+                }
                 break;
 
         }
