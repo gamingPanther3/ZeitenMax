@@ -61,6 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
         dataManager.createJSON(getApplicationContext());
         //resetReleaseNoteConfig(getApplicationContext());
         setUpListeners();
+        appendSpaceToSwitches(findViewById(R.id.settingsUI));
 
         // Declare a Spinner object
         Spinner spinner = findViewById(R.id.settings_display_mode_spinner);
@@ -154,7 +155,7 @@ public class SettingsActivity extends AppCompatActivity {
             dataManager.saveToJSON("disablePatchNotesTemporary", true, getApplicationContext());
             dataManager.saveToJSON("settingReleaseNotesSwitch", true, getApplicationContext());
         }
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.clock);
         //checkDarkmodeSetting();
         setUpListeners();
     }
@@ -352,7 +353,6 @@ public class SettingsActivity extends AppCompatActivity {
     private void switchDisplayMode(int currentNightMode) {
         ScrollView settingsScrollView = findViewById(R.id.settings_sroll_textview);
         LinearLayout settingsLayout = findViewById(R.id.settings_layout);
-        Button settingsReturnButton = findViewById(R.id.settings_return_button);
 
         TextView settingsTitle = findViewById(R.id.settings_title);
         TextView settingsReleaseNotes = findViewById(R.id.settings_release_notes);
@@ -365,7 +365,6 @@ public class SettingsActivity extends AppCompatActivity {
 
         Spinner spinner = findViewById(R.id.settings_display_mode_spinner);
         updateSpinner2(spinner);
-        @SuppressLint("CutPasteId") Button backbutton = findViewById(R.id.settings_return_button);
 
         if(getSelectedSetting() != null) {
             if(getSelectedSetting().equals("Systemstandard")) {
@@ -378,16 +377,8 @@ public class SettingsActivity extends AppCompatActivity {
                         if (trueDarkMode != null) {
                             if (trueDarkMode.equals("false")) {
                                 updateUI(R.color.black, R.color.white);
-
-                                if(backbutton != null) {
-                                    backbutton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_light));
-                                }
                             } else {
                                 updateUI(R.color.darkmode_black, R.color.darkmode_white);
-
-                                if(backbutton != null) {
-                                    backbutton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_true_darkmode));
-                                }
                             }
                         } else {
                             updateUI(R.color.black, R.color.white);
@@ -398,8 +389,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                         // Set the colors for the Button and the TextView
                         settingsLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-                        settingsReturnButton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24));
-                        settingsReturnButton.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
                         settingsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
                         settingsTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
                         settingsScrollView.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
@@ -415,8 +404,6 @@ public class SettingsActivity extends AppCompatActivity {
                 }
             } else if (getSelectedSetting().equals("Tageslichtmodus")) {
                 settingsLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
-                settingsReturnButton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24));
-                settingsReturnButton.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
                 settingsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
                 settingsTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
                 settingsScrollView.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
@@ -437,17 +424,9 @@ public class SettingsActivity extends AppCompatActivity {
                     if (trueDarkMode.equals("false")) {
                         updateUI(R.color.black, R.color.white);
                         updateSpinner2(findViewById(R.id.settings_display_mode_spinner));
-
-                        if(backbutton != null) {
-                            backbutton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_light));
-                        }
                     } else {
                         updateUI(R.color.darkmode_black, R.color.darkmode_white);
                         updateSpinner2(findViewById(R.id.settings_display_mode_spinner));
-
-                        if(backbutton != null) {
-                            backbutton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_true_darkmode));
-                        }
                     }
                 } else {
                     updateUI(R.color.black, R.color.white);
@@ -466,7 +445,6 @@ public class SettingsActivity extends AppCompatActivity {
     private void updateUI(int backgroundColor, int textColor) {
         ScrollView settingsScrollView = findViewById(R.id.settings_sroll_textview);
         LinearLayout settingsLayout = findViewById(R.id.settings_layout);
-        Button settingsReturnButton = findViewById(R.id.settings_return_button);
         TextView settingsTitle = findViewById(R.id.settings_title);
         TextView settingsReleaseNotes = findViewById(R.id.settings_release_notes);
         TextView settingsReleaseNotesText = findViewById(R.id.settings_release_notes_text);
@@ -477,8 +455,6 @@ public class SettingsActivity extends AppCompatActivity {
         TextView settingsCredits = findViewById(R.id.credits_view);
 
         settingsLayout.setBackgroundColor(ContextCompat.getColor(this, backgroundColor));
-        settingsReturnButton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_light));
-        settingsReturnButton.setBackgroundColor(ContextCompat.getColor(this, backgroundColor));
         settingsTitle.setTextColor(ContextCompat.getColor(this, textColor));
         settingsTitle.setBackgroundColor(ContextCompat.getColor(this, backgroundColor));
         settingsScrollView.setBackgroundColor(ContextCompat.getColor(this, backgroundColor));

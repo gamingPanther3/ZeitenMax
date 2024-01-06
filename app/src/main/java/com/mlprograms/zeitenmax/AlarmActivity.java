@@ -50,7 +50,7 @@ public class AlarmActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.clock);
 
         dataManager = new DataManager((ClockActivity) getMainActivityContext());
         dataManager.createJSON(getApplicationContext());
@@ -110,7 +110,7 @@ public class AlarmActivity extends AppCompatActivity {
             dataManager.saveToJSON("disablePatchNotesTemporary", true, getApplicationContext());
             dataManager.saveToJSON("settingReleaseNotesSwitch", true, getApplicationContext());
         }
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.clock);
         //checkDarkmodeSetting();
         setUpListeners();
     }
@@ -208,6 +208,7 @@ public class AlarmActivity extends AppCompatActivity {
         TextView timer = findViewById(R.id.timer);
         TextView alarm = findViewById(R.id.alarm);
         TextView settings = findViewById(R.id.settings);
+        TextView clock = findViewById(R.id.clock);
 
         int newColorBTNBackgroundAccent = 0;
         int newColorBTNForegroundAccent = 0;
@@ -221,8 +222,13 @@ public class AlarmActivity extends AppCompatActivity {
                             icon = getDrawable(R.drawable.baseline_access_time_24_light);
                             stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                         }
+                        if (clock != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_access_time_24_light);
+                            clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
                         if (timer != null) {
-                            Drawable icon = getDrawable(R.drawable.baseline_av_timer_24_light);
+                            Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_light);
                             timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                         }
                         if (alarm != null) {
@@ -243,8 +249,13 @@ public class AlarmActivity extends AppCompatActivity {
                                 icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
                                 stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                             }
+                            if (clock != null) {
+                                Drawable icon;
+                                icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
+                                clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
                             if (timer != null) {
-                                Drawable icon = getDrawable(R.drawable.baseline_av_timer_24_true_darkmode);
+                                Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_true_darkmode);
                                 timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                             }
                             if (alarm != null) {
@@ -269,8 +280,13 @@ public class AlarmActivity extends AppCompatActivity {
                             icon = getDrawable(R.drawable.baseline_access_time_24);
                             stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                         }
+                        if (clock != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_access_time_24);
+                            clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
                         if (timer != null) {
-                            Drawable icon = getDrawable(R.drawable.baseline_av_timer_24);
+                            Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24);
                             timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                         }
                         if (alarm != null) {
@@ -293,8 +309,13 @@ public class AlarmActivity extends AppCompatActivity {
                     icon = getDrawable(R.drawable.baseline_access_time_24);
                     stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                 }
+                if (clock != null) {
+                    Drawable icon;
+                    icon = getDrawable(R.drawable.baseline_access_time_24);
+                    clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
                 if (timer != null) {
-                    Drawable icon = getDrawable(R.drawable.baseline_av_timer_24);
+                    Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24);
                     timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                 }
                 if (alarm != null) {
@@ -312,8 +333,13 @@ public class AlarmActivity extends AppCompatActivity {
                     icon = getDrawable(R.drawable.baseline_access_time_24_light);
                     stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                 }
+                if (clock != null) {
+                    Drawable icon;
+                    icon = getDrawable(R.drawable.baseline_access_time_24_light);
+                    clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
                 if (timer != null) {
-                    Drawable icon = getDrawable(R.drawable.baseline_av_timer_24_light);
+                    Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_light);
                     timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                 }
                 if (alarm != null) {
@@ -334,8 +360,13 @@ public class AlarmActivity extends AppCompatActivity {
                         icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
                         stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                     }
+                    if (clock != null) {
+                        Drawable icon;
+                        icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
+                        clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
                     if (timer != null) {
-                        Drawable icon = getDrawable(R.drawable.baseline_av_timer_24_true_darkmode);
+                        Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_true_darkmode);
                         timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
                     }
                     if (alarm != null) {
