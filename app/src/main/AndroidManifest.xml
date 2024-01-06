@@ -13,7 +13,7 @@
         android:theme="@style/Theme.ZeitenMax"
         tools:targetApi="34">
         <activity
-            android:name=".MainActivity"
+            android:name=".ClockActivity"
             android:configChanges="uiMode"
             android:exported="true"
             android:screenOrientation="portrait">

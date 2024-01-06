@@ -17,7 +17,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+public class ClockActivity extends AppCompatActivity {
 
     /**
      * Instance of DataManager to handle data-related tasks such as saving and retrieving data.

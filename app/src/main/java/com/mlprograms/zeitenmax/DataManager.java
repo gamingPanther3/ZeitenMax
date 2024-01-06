@@ -24,7 +24,6 @@ import java.nio.file.Files;
  *  |----------------------------------|--------------------------|--------------------------------------|
  *  | settingReleaseNotesSwitch        | true / false             | SettingsActivity                     |
  *  | selectedSpinnerSetting           | System / Dark / Light    | MainActivity                         |
- *  | removeValue                      | true / false             | MainActivity                         |
  *  | settingsTrueDarkMode             | true / false             | MainActivity -> SettingsActivity     |
  *  | showPatchNotes                   | true / false             | MainActivity -> SettingsActivity     |
  *  | disablePatchNotesTemporary       | true / false             | MainActivity -> SettingsActivity     |
@@ -33,7 +32,7 @@ import java.nio.file.Files;
 public class DataManager {
 
     // Declare a MainActivity object
-    private MainActivity mainActivity;
+    private ClockActivity mainActivity;
 
     // Define the names of the files
     private static final String JSON_FILE = "settings.json";
@@ -43,7 +42,7 @@ public class DataManager {
      *
      * @param mainActivity The MainActivity instance that this DataManager will be associated with.
      */
-    public DataManager(MainActivity mainActivity) {
+    public DataManager(ClockActivity mainActivity) {
         this.mainActivity = mainActivity;
     }
 
@@ -200,7 +199,6 @@ public class DataManager {
         saveToJSON("disablePatchNotesTemporary", "false", applicationContext);
         saveToJSON("showReleaseNotesOnVeryFirstStart", "true", applicationContext);
         saveToJSON("selectedSpinnerSetting", "System", applicationContext);
-        saveToJSON("removeValue", "false", applicationContext);
     }
 
 

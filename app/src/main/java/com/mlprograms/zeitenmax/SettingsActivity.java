@@ -3,6 +3,7 @@ package com.mlprograms.zeitenmax;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Spinner;
@@ -28,11 +30,16 @@ import androidx.core.content.ContextCompat;
  */
 public class SettingsActivity extends AppCompatActivity {
 
+    /**
+     * Instance of SharedPreferences for storing and retrieving small amounts of primitive data as key-value pairs.
+     */
+    SharedPreferences prefs = null;
+
     // Declare a DataManager object
     DataManager dataManager;
     // Declare a static MainActivity object
     @SuppressLint("StaticFieldLeak")
-    private static MainActivity mainActivity;
+    private static ClockActivity mainActivity;
 
     /**
      * The `savedInstanceState` Bundle contains data that was saved in {@link #onSaveInstanceState}
@@ -53,86 +60,8 @@ public class SettingsActivity extends AppCompatActivity {
         //dataManager.deleteJSON(getApplicationContext());
         dataManager.createJSON(getApplicationContext());
         //resetReleaseNoteConfig(getApplicationContext());
+        setUpListeners();
 
-        int currentNightMode = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-        switchDisplayMode(currentNightMode);
-
-        @SuppressLint("CutPasteId") Button button = findViewById(R.id.settings_return_button);
-        button.setOnClickListener(v -> returnToCalculator());
-
-        findViewById(R.id.settingsUI);
-
-        @SuppressLint({"CutPasteId", "UseSwitchCompatOrMaterialCode"}) Switch settingsReleaseNotesSwitch = findViewById(R.id.settings_release_notes);
-        @SuppressLint("UseSwitchCompatOrMaterialCode") Switch settingsTrueDarkMode = findViewById(R.id.settings_true_darkmode);
-
-        updateSwitchState(settingsReleaseNotesSwitch, "settingReleaseNotesSwitch");
-        updateSwitchState(settingsTrueDarkMode, "settingsTrueDarkMode");
-
-        appendSpaceToSwitches(findViewById(R.id.settingsUI));
-        final String setRelNotSwitch= dataManager.readFromJSON("settingReleaseNotesSwitch", getMainActivityContext());
-
-        if (setRelNotSwitch != null) {
-            settingsReleaseNotesSwitch.setChecked(setRelNotSwitch.equals("true"));
-        }
-
-        settingsReleaseNotesSwitch.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            dataManager.saveToJSON("settingReleaseNotesSwitch", isChecked, getMainActivityContext());
-            dataManager.saveToJSON("showPatchNotes", isChecked, getMainActivityContext());
-            dataManager.saveToJSON("disablePatchNotesTemporary", isChecked, getMainActivityContext());
-            Log.d("Settings", "settingReleaseNotesSwitch=" + dataManager.readFromJSON("settingReleaseNotesSwitch", getMainActivityContext()));
-        });
-        settingsTrueDarkMode.setOnCheckedChangeListener((buttonView, isChecked) -> {
-            dataManager.saveToJSON("settingsTrueDarkMode", isChecked, getMainActivityContext());
-            Log.d("Settings", "settingsTrueDarkMode=" + dataManager.readFromJSON("settingsTrueDarkMode", getMainActivityContext()));
-
-            dataManager = new DataManager();
-            int currentNightMode1 = getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK;
-            updateSpinner(findViewById(R.id.settings_display_mode_spinner));
-            @SuppressLint("CutPasteId") Button backbutton = findViewById(R.id.settings_return_button);
-
-            String trueDarkMode = dataManager.readFromJSON("settingsTrueDarkMode", getMainActivityContext());
-            if(currentNightMode1 == Configuration.UI_MODE_NIGHT_YES) {
-                if (trueDarkMode != null && trueDarkMode.equals("true") && (getSelectedSetting().equals("Dunkelmodus") || getSelectedSetting().equals("Systemstandard"))) {
-                    updateUI(R.color.darkmode_black, R.color.darkmode_white);
-                    backbutton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_true_darkmode));
-                } else if (trueDarkMode != null && trueDarkMode.equals("false") && (getSelectedSetting().equals("Dunkelmodus") || getSelectedSetting().equals("Systemstandard"))) {
-                    updateUI(R.color.black, R.color.white);
-                    backbutton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_light));
-                }
-            } else if(currentNightMode1 == Configuration.UI_MODE_NIGHT_NO) {
-                if (trueDarkMode != null && trueDarkMode.equals("true") && (getSelectedSetting().equals("Dunkelmodus") || getSelectedSetting().equals("Systemstandard"))) {
-                    updateUI(R.color.darkmode_black, R.color.darkmode_white);
-                    backbutton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_true_darkmode));
-                } else if (trueDarkMode != null && trueDarkMode.equals("false") && (getSelectedSetting().equals("Dunkelmodus") || getSelectedSetting().equals("Systemstandard"))) {
-                    updateUI(R.color.black, R.color.white);
-                    backbutton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_light));
-                }
-                ScrollView settingsScrollView = findViewById(R.id.settings_sroll_textview);
-                LinearLayout settingsLayout = findViewById(R.id.settings_layout);
-                @SuppressLint("CutPasteId") Button settingsReturnButton = findViewById(R.id.settings_return_button);
-
-                TextView settingsTitle = findViewById(R.id.settings_title);
-                @SuppressLint("CutPasteId") TextView settingsReleaseNotes = findViewById(R.id.settings_release_notes);
-                TextView settingsReleaseNotesText = findViewById(R.id.settings_release_notes_text);
-                TextView settingsTrueDarkModeText = findViewById(R.id.settings_true_darkmode_text);
-                TextView settingsCredits = findViewById(R.id.credits_view);
-
-                settingsLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
-                settingsReturnButton.setForeground(getDrawable(R.drawable.baseline_arrow_back_24_light));
-                settingsReturnButton.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
-                settingsTitle.setTextColor(ContextCompat.getColor(this, R.color.white));
-                settingsTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
-                settingsScrollView.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
-                settingsReleaseNotes.setTextColor(ContextCompat.getColor(this, R.color.white));
-                settingsReleaseNotesText.setTextColor(ContextCompat.getColor(this, R.color.white));
-                settingsTrueDarkMode.setTextColor(ContextCompat.getColor(this, R.color.white));
-                settingsTrueDarkModeText.setTextColor(ContextCompat.getColor(this, R.color.white));
-                settingsCredits.setTextColor(ContextCompat.getColor(this, R.color.white));
-                settingsCredits.setBackgroundColor(ContextCompat.getColor(this, R.color.black));
-
-                switchDisplayMode(Configuration.UI_MODE_NIGHT_NO);
-            }
-        });
         // Declare a Spinner object
         Spinner spinner = findViewById(R.id.settings_display_mode_spinner);
         Integer num = getSelectedSettingPosition();
@@ -149,6 +78,85 @@ public class SettingsActivity extends AppCompatActivity {
                 // do nothing
             }
         });
+
+        // If it's the first run of the application
+        prefs = getSharedPreferences("com.mlprograms.RechenMax", MODE_PRIVATE);
+        if (prefs.getBoolean("firstrun", true)) {
+            dataManager.saveToJSON("showPatchNotes", true, getApplicationContext());
+            setContentView(R.layout.patchnotes);
+            checkDarkmodeSetting();
+            prefs.edit().putBoolean("firstrun", false).apply();
+        }
+
+        Log.e("MainActivity", "showPatchNotes=" + dataManager.readFromJSON("showPatchNotes", getApplicationContext()));
+        Log.e("MainActivity", "disablePatchNotesTemporary=" + dataManager.readFromJSON("disablePatchNotesTemporary", getApplicationContext()));
+
+        final String showPatNot = dataManager.readFromJSON("showPatchNotes", getApplicationContext());
+        final String disablePatNotTemp = dataManager.readFromJSON("disablePatchNotesTemporary", getApplicationContext());
+
+        if (showPatNot != null && disablePatNotTemp != null) {
+            if (showPatNot.equals("true") && disablePatNotTemp.equals("false")) {
+                setContentView(R.layout.patchnotes);
+                setUpListeners();
+                checkDarkmodeSetting();
+            }
+        }
+        checkDarkmodeSetting();
+    }
+
+    /**
+     * Checks the dark mode setting.
+     * It switches the display mode based on the current night mode.
+     */
+    private void checkDarkmodeSetting() {
+        switchDisplayMode(getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK);
+    }
+
+    /**
+     * Sets up the listeners for each button in the application
+     */
+    private void setUpListeners() {
+        setButtonListener(R.id.settings, this::switchToSettingsAction);
+        setButtonListener(R.id.stopwatch, this::switchToStopwatchAction);
+        setButtonListener(R.id.timer, this::switchToTimerAction);
+        setButtonListener(R.id.alarm, this::switchToAlarmAction);
+        setButtonListener(R.id.clock, this::switchToClockAction);
+
+        setButtonListener(R.id.okay_button, this::patchNotesOkayButtonAction);
+    }
+
+    /**
+     * Sets up the listener for all number buttons
+     *
+     * @param buttonId The ID of the button to which the listener is to be set.
+     * @param action The action which belongs to the button.
+     */
+    private void setButtonListener(int buttonId, Runnable action) {
+        Button btn = findViewById(buttonId);
+        if(btn != null) {
+            btn.setOnClickListener(v -> action.run());
+        }
+    }
+
+    /**
+     * Handles the action when the okay button in the patch notes is clicked.
+     * Depending on whether the checkbox is checked or not, it saves different values to JSON.
+     * Then it sets the content view, loads numbers, checks dark mode setting, checks science button state, and sets up listeners.
+     */
+    public void patchNotesOkayButtonAction() {
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) CheckBox checkBox = findViewById(R.id.checkBox);
+        if (checkBox.isChecked()) {
+            dataManager.saveToJSON("showPatchNotes", false, getApplicationContext());
+            dataManager.saveToJSON("disablePatchNotesTemporary", true, getApplicationContext());
+            dataManager.saveToJSON("settingReleaseNotesSwitch", false, getApplicationContext());
+        } else {
+            dataManager.saveToJSON("showPatchNotes", true, getApplicationContext());
+            dataManager.saveToJSON("disablePatchNotesTemporary", true, getApplicationContext());
+            dataManager.saveToJSON("settingReleaseNotesSwitch", true, getApplicationContext());
+        }
+        setContentView(R.layout.activity_main);
+        //checkDarkmodeSetting();
+        setUpListeners();
     }
 
     /**
@@ -312,7 +320,7 @@ public class SettingsActivity extends AppCompatActivity {
      * This static method sets the context of the MainActivity.
      * @param activity The MainActivity whose context is to be set.
      */
-    public static void setMainActivityContext(MainActivity activity) {
+    public static void setMainActivityContext(ClockActivity activity) {
         mainActivity = activity;
     }
 
@@ -491,7 +499,7 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        returnToCalculator();
+        switchToClockAction();
     }
 
     /**
@@ -517,10 +525,50 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     /**
-     * This method returns to the calculator by starting the MainActivity.
+     * Switches to the stopwatch activity.
+     * It creates a new StopwatchActivity, sets the main activity context, and starts the activity.
      */
-    public void returnToCalculator() {
-        Intent intent = new Intent(this, MainActivity.class);
+    private void switchToStopwatchAction() {
+        StopwatchActivity.setMainActivityContext((ClockActivity) getMainActivityContext());
+        Intent intent = new Intent(this, StopwatchActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Switches to the timer activity.
+     * It creates a new TimerActivity, sets the main activity context, and starts the activity.
+     */
+    private void switchToTimerAction() {
+        TimerActivity.setMainActivityContext(((ClockActivity) getMainActivityContext()));
+        Intent intent = new Intent(this, TimerActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Switches to the alarm activity.
+     * It creates a new AlarmActivity, sets the main activity context, and starts the activity.
+     */
+    private void switchToAlarmAction() {
+        AlarmActivity.setMainActivityContext((ClockActivity) getMainActivityContext());
+        Intent intent = new Intent(this, AlarmActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Switches to the clock activity.
+     */
+    private void switchToClockAction() {
+        Intent intent = new Intent(this, ClockActivity.class);
+        startActivity(intent);
+    }
+
+    /**
+     * Switches to the settings activity.
+     * It creates a new SettingsActivity, sets the main activity context, and starts the activity.
+     */
+    private void switchToSettingsAction() {
+        SettingsActivity.setMainActivityContext((ClockActivity) getMainActivityContext());
+        Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
     }
 }
