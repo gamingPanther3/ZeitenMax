@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -363,6 +364,12 @@ public class SettingsActivity extends AppCompatActivity {
         TextView settingsDisplayModeTitle = findViewById(R.id.settings_display_mode_title);
         TextView settingsCredits = findViewById(R.id.credits_view);
 
+        TextView stopwatch = findViewById(R.id.stopwatch);
+        TextView timer = findViewById(R.id.timer);
+        TextView alarm = findViewById(R.id.alarm);
+        TextView settings = findViewById(R.id.settings);
+        TextView clock = findViewById(R.id.clock);
+
         Spinner spinner = findViewById(R.id.settings_display_mode_spinner);
         updateSpinner2(spinner);
 
@@ -377,15 +384,107 @@ public class SettingsActivity extends AppCompatActivity {
                         if (trueDarkMode != null) {
                             if (trueDarkMode.equals("false")) {
                                 updateUI(R.color.black, R.color.white);
+
+                                if (stopwatch != null) {
+                                    Drawable icon;
+                                    icon = getDrawable(R.drawable.baseline_access_time_24_light);
+                                    stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
+                                if (clock != null) {
+                                    Drawable icon;
+                                    icon = getDrawable(R.drawable.baseline_access_time_24_light);
+                                    clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
+                                if (timer != null) {
+                                    Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_light);
+                                    timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
+                                if (alarm != null) {
+                                    Drawable icon = getDrawable(R.drawable.baseline_alarm_24_light);
+                                    alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
+                                if (settings != null) {
+                                    Drawable icon = getDrawable(R.drawable.baseline_settings_24_light);
+                                    settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
                             } else {
                                 updateUI(R.color.darkmode_black, R.color.darkmode_white);
+
+                                if (stopwatch != null) {
+                                    Drawable icon;
+                                    icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
+                                    stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
+                                if (clock != null) {
+                                    Drawable icon;
+                                    icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
+                                    clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
+                                if (timer != null) {
+                                    Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_true_darkmode);
+                                    timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
+                                if (alarm != null) {
+                                    Drawable icon = getDrawable(R.drawable.baseline_alarm_24_true_darkmode);
+                                    alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
+                                if (settings != null) {
+                                    Drawable icon = getDrawable(R.drawable.baseline_settings_24_true_darkmode);
+                                    settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                                }
                             }
                         } else {
                             updateUI(R.color.black, R.color.white);
+
+                            if (stopwatch != null) {
+                                Drawable icon;
+                                icon = getDrawable(R.drawable.baseline_access_time_24_light);
+                                stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
+                            if (clock != null) {
+                                Drawable icon;
+                                icon = getDrawable(R.drawable.baseline_access_time_24_light);
+                                clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
+                            if (timer != null) {
+                                Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_light);
+                                timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
+                            if (alarm != null) {
+                                Drawable icon = getDrawable(R.drawable.baseline_alarm_24_light);
+                                alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
+                            if (settings != null) {
+                                Drawable icon = getDrawable(R.drawable.baseline_settings_24_light);
+                                settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                            }
                         }
                         break;
                     case Configuration.UI_MODE_NIGHT_NO:
                         // Nightmode is not activated
+
+                        if (stopwatch != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_access_time_24);
+                            stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (clock != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_access_time_24);
+                            clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (timer != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24);
+                            timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (alarm != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_alarm_24);
+                            alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (settings != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_settings_24);
+                            settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
 
                         // Set the colors for the Button and the TextView
                         settingsLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
@@ -403,6 +502,29 @@ public class SettingsActivity extends AppCompatActivity {
                         break;
                 }
             } else if (getSelectedSetting().equals("Tageslichtmodus")) {
+                if (stopwatch != null) {
+                    Drawable icon;
+                    icon = getDrawable(R.drawable.baseline_access_time_24);
+                    stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (clock != null) {
+                    Drawable icon;
+                    icon = getDrawable(R.drawable.baseline_access_time_24);
+                    clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (timer != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24);
+                    timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (alarm != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_alarm_24);
+                    alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+                if (settings != null) {
+                    Drawable icon = getDrawable(R.drawable.baseline_settings_24);
+                    settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                }
+
                 settingsLayout.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
                 settingsTitle.setTextColor(ContextCompat.getColor(this, R.color.black));
                 settingsTitle.setBackgroundColor(ContextCompat.getColor(this, R.color.white));
@@ -424,13 +546,82 @@ public class SettingsActivity extends AppCompatActivity {
                     if (trueDarkMode.equals("false")) {
                         updateUI(R.color.black, R.color.white);
                         updateSpinner2(findViewById(R.id.settings_display_mode_spinner));
+
+                        if (stopwatch != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_access_time_24_light);
+                            stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (clock != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_access_time_24_light);
+                            clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (timer != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_light);
+                            timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (alarm != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_alarm_24_light);
+                            alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (settings != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_settings_24_light);
+                            settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
                     } else {
                         updateUI(R.color.darkmode_black, R.color.darkmode_white);
                         updateSpinner2(findViewById(R.id.settings_display_mode_spinner));
+
+                        if (stopwatch != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
+                            stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (clock != null) {
+                            Drawable icon;
+                            icon = getDrawable(R.drawable.baseline_access_time_24_true_darkmode);
+                            clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (timer != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24_true_darkmode);
+                            timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (alarm != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_alarm_24_true_darkmode);
+                            alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
+                        if (settings != null) {
+                            Drawable icon = getDrawable(R.drawable.baseline_settings_24_true_darkmode);
+                            settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                        }
                     }
                 } else {
                     updateUI(R.color.black, R.color.white);
                     updateSpinner2(findViewById(R.id.settings_display_mode_spinner));
+
+                    if (stopwatch != null) {
+                        Drawable icon;
+                        icon = getDrawable(R.drawable.baseline_access_time_24);
+                        stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (clock != null) {
+                        Drawable icon;
+                        icon = getDrawable(R.drawable.baseline_access_time_24);
+                        clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (timer != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24);
+                        timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (alarm != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_alarm_24);
+                        alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (settings != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_settings_24);
+                        settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
                 }
             }
         }

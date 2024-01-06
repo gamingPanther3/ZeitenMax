@@ -379,6 +379,29 @@ public class TimerActivity extends AppCompatActivity {
                 } else if (trueDarkmode != null && trueDarkmode.equals("false")) {
                     newColorBTNForegroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.white);
                     newColorBTNBackgroundAccent = ContextCompat.getColor(getApplicationContext(), R.color.black);
+
+                    if (stopwatch != null) {
+                        Drawable icon;
+                        icon = getDrawable(R.drawable.baseline_access_time_24);
+                        stopwatch.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (clock != null) {
+                        Drawable icon;
+                        icon = getDrawable(R.drawable.baseline_access_time_24);
+                        clock.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (timer != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_hourglass_empty_24);
+                        timer.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (alarm != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_alarm_24);
+                        alarm.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
+                    if (settings != null) {
+                        Drawable icon = getDrawable(R.drawable.baseline_settings_24);
+                        settings.setCompoundDrawablesWithIntrinsicBounds(null, icon, null, null);
+                    }
                 }
                 break;
 
