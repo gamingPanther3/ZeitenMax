@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:id="@+id/patchnotesUI"
     android:background="@color/colorBTNBackgroundAccent"
-    tools:context="com.mlprograms.zeitenmax.ClockActivity" >
+    tools:context=".ClockActivity" >
 
     <LinearLayout
         android:layout_width="match_parent"

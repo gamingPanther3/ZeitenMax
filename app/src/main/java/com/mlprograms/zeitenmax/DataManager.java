@@ -17,17 +17,18 @@ import java.nio.file.Files;
 /**
  * DataManager
  * @author Max Lemberg
- * @version 1.0.4
- * @date 22.12.2023
+ * @version 1.0.5
+ * @date 07.01.2023
  *
- *  | Names                            | Values                   | Context                              |
- *  |----------------------------------|--------------------------|--------------------------------------|
- *  | settingReleaseNotesSwitch        | true / false             | SettingsActivity                     |
- *  | selectedSpinnerSetting           | System / Dark / Light    | MainActivity                         |
- *  | settingsTrueDarkMode             | true / false             | MainActivity -> SettingsActivity     |
- *  | showPatchNotes                   | true / false             | MainActivity -> SettingsActivity     |
- *  | disablePatchNotesTemporary       | true / false             | MainActivity -> SettingsActivity     |
- *  | showReleaseNotesOnVeryFirstStart | true / false             | MainActivity                         |
+ *  | Names                            | Values                   |
+ *  |----------------------------------|--------------------------|
+ *  | settingReleaseNotesSwitch        | true / false             |
+ *  | selectedSpinnerSetting           | System / Dark / Light    |
+ *  | settingsTrueDarkMode             | true / false             |
+ *  | showPatchNotes                   | true / false             |
+ *  | disablePatchNotesTemporary       | true / false             |
+ *  | showReleaseNotesOnVeryFirstStart | true / false             |
+ *  | selectedTab                      | 0, 1, 2, 3, 4            |
  */
 public class DataManager {
 

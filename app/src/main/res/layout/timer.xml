@@ -3,72 +3,97 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/activity_main"
     android:background="@color/colorBTNBackgroundAccent"
-    tools:context=".AlarmActivity">
+    tools:context=".ClockActivity">
+
+    <LinearLayout
+        android:id="@+id/settings_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/settings_title"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="50sp"
+            android:layout_weight="1"
+            android:backgroundTint="@color/white"
+            android:gravity="center_vertical"
+            android:text="Timer"
+            android:textColor="@color/colorBTNForegroundAccent"
+            android:textSize="@dimen/button_size" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
-        android:paddingBottom="5dp"
-        android:paddingRight="5dp">
 
-        <Button
-            android:id="@+id/alarm"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_height="@dimen/taskbar_button_height"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="Wecker"
-            android:textSize="@dimen/taskbar_button_text_size"
-            android:background="@color/colorBTNBackgroundAccent"
-            android:drawableTop="@drawable/baseline_alarm_24" />
+        android:paddingRight="5dp"
+        android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/clock"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_height="@dimen/taskbar_button_height"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="Uhr"
-            android:textSize="@dimen/taskbar_button_text_size"
-            android:background="@color/colorBTNBackgroundAccent"
-            android:drawableTop="@drawable/baseline_access_time_24" />
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tab_layout"
+            android:layout_width="match_parent"
+            android:backgroundTint="@color/white"
+            android:layout_height="wrap_content">
 
-        <Button
-            android:id="@+id/timer"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_height="@dimen/taskbar_button_height"
-            android:layout_width="wrap_content"
-            android:layout_weight="1"
-            android:text="Timer"
-            android:textSize="@dimen/taskbar_button_text_size"
-            android:background="@color/colorBTNBackgroundAccent"
-            android:drawableTop="@drawable/baseline_hourglass_empty_24" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/alarm"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_height="@dimen/taskbar_button_height"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/taskbar_button_text_size"
+                android:background="@color/colorBTNBackgroundAccent"
+                android:icon="@drawable/baseline_alarm_24">
+            </com.google.android.material.tabs.TabItem>
 
-        <Button
-            android:id="@+id/stopwatch"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/taskbar_button_height"
-            android:layout_weight="1"
-            android:background="@color/colorBTNBackgroundAccent"
-            android:drawableTop="@drawable/baseline_access_time_24"
-            android:text="Stoppuhr"
-            android:textSize="@dimen/taskbar_button_text_size" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/clock"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_height="@dimen/taskbar_button_height"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/taskbar_button_text_size"
+                android:background="@color/colorBTNBackgroundAccent"
+                android:icon="@drawable/baseline_access_time_24">
+            </com.google.android.material.tabs.TabItem>
 
-        <Button
-            android:id="@+id/settings"
-            style="?android:attr/buttonBarButtonStyle"
-            android:layout_width="92dp"
-            android:layout_height="@dimen/taskbar_button_height"
-            android:layout_weight="0"
-            android:text="Einstellungen"
-            android:textSize="@dimen/taskbar_button_text_size"
-            android:background="@color/colorBTNBackgroundAccent"
-            android:drawableTop="@drawable/baseline_settings_24" />
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/timer"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_height="@dimen/taskbar_button_height"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:textSize="@dimen/taskbar_button_text_size"
+                android:background="@color/colorBTNBackgroundAccent"
+                android:icon="@drawable/baseline_hourglass_empty_24">
+            </com.google.android.material.tabs.TabItem>
 
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/stopwatch"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/taskbar_button_height"
+                android:layout_weight="1"
+                android:background="@color/colorBTNBackgroundAccent"
+                android:icon="@drawable/baseline_access_time_24"
+                android:textSize="@dimen/taskbar_button_text_size">
+            </com.google.android.material.tabs.TabItem>
+
+            <com.google.android.material.tabs.TabItem
+                android:id="@+id/settings"
+                style="?android:attr/buttonBarButtonStyle"
+                android:layout_width="92dp"
+                android:layout_height="@dimen/taskbar_button_height"
+                android:layout_weight="0"
+                android:textSize="@dimen/taskbar_button_text_size"
+                android:background="@color/colorBTNBackgroundAccent"
+                android:icon="@drawable/baseline_settings_24">
+            </com.google.android.material.tabs.TabItem>
+
+        </com.google.android.material.tabs.TabLayout>
     </LinearLayout>
 </RelativeLayout>
