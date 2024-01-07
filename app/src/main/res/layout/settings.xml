@@ -28,6 +28,7 @@
     </LinearLayout>
 
     <ScrollView
+        android:background="@color/colorBTNBackgroundAccent"
         android:id="@+id/settings_sroll_textview"
         android:layout_width="match_parent"
         android:layout_height="841sp"
@@ -136,16 +137,16 @@
             android:id="@+id/credits_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="20sp"
-            android:background="@color/colorBTNBackgroundAccent"
-            android:paddingLeft="20sp"
-            android:paddingRight="20sp"
-            android:textSize="12sp"
             android:layout_gravity="bottom"
+            android:background="@color/colorBTNBackgroundAccent"
             android:gravity="center"
             android:linksClickable="true"
+            android:paddingLeft="20sp"
+            android:paddingRight="20sp"
+            android:paddingBottom="20sp"
             android:text="\nErsteller: Max Lemberg\nCopyright: © 2023 Max Lemberg. Alle Rechte vorbehalten.\nLizenz: Dieses Produkt ist lizenziert unter der Apache-2.0 Lizenz.\nVersion: 1.0.2"
-            android:textColor="@color/colorBTNForegroundAccent" />
+            android:textColor="@color/colorBTNForegroundAccent"
+            android:textSize="12sp" />
     </FrameLayout>
 
     <LinearLayout
@@ -153,6 +154,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
+        android:background="@color/colorBTNBackgroundAccent"
         android:paddingBottom="5dp"
         android:paddingRight="5dp">
 
