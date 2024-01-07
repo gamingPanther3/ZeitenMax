@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <application
         android:allowBackup="false"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -23,36 +24,5 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".SettingsActivity"
-            android:exported="false"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".DataManager"
-            android:exported="false"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".StopwatchActivity"
-            android:exported="false"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".TimerActivity"
-            android:exported="false"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait">
-        </activity>
-        <activity
-            android:name=".AlarmActivity"
-            android:exported="false"
-            android:configChanges="uiMode"
-            android:screenOrientation="portrait">
-        </activity>
     </application>
-
 </manifest>

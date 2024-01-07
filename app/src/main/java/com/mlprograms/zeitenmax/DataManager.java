@@ -32,19 +32,19 @@ import java.nio.file.Files;
  */
 public class DataManager {
 
-    // Declare a MainActivity object
-    private ClockActivity mainActivity;
+    // Declare a clockActivity object
+    private ClockActivity clockActivity;
 
     // Define the names of the files
     private static final String JSON_FILE = "settings.json";
 
     /**
-     * This constructor is used to create a DataManager object for the MainActivity.
+     * This constructor is used to create a DataManager object for the clockActivity.
      *
-     * @param mainActivity The MainActivity instance that this DataManager will be associated with.
+     * @param clockActivity The clockActivity instance that this DataManager will be associated with.
      */
-    public DataManager(ClockActivity mainActivity) {
-        this.mainActivity = mainActivity;
+    public DataManager(ClockActivity clockActivity) {
+        this.clockActivity = clockActivity;
     }
 
     /**
@@ -163,7 +163,6 @@ public class DataManager {
             File file = new File(applicationContext.getFilesDir(), JSON_FILE);
             if (!file.exists()) {
                 Log.e("readFromJSON", "File does not exist");
-                initializeSettings(applicationContext);
                 if (!file.createNewFile()) {
                     Log.e("saveToJSON", "Failed to create new file");
                     return null;
@@ -172,15 +171,13 @@ public class DataManager {
             String content = new String(Files.readAllBytes(file.toPath()));
             if (content.isEmpty()) {
                 Log.e("readFromJSON", "File is empty");
-                initializeSettings(applicationContext);
-                return readFromJSON(name, applicationContext);
+                return null;
             }
             JSONObject jsonRead = new JSONObject(new JSONTokener(content));
             if (jsonRead.has(name)) {
                 setting = jsonRead.getString(name);
             } else {
                 Log.e("readFromJSON", "Key: " + name + " does not exist in JSON");
-                initializeSettings(applicationContext);
             }
         } catch (IOException | JSONException e) {
             e.printStackTrace();
@@ -193,13 +190,28 @@ public class DataManager {
      *
      * @param applicationContext The application context, which is used to get the application's file directory.
      */
-    private void initializeSettings(Context applicationContext) {
-        saveToJSON("settingReleaseNotesSwitch", "true", applicationContext);
-        saveToJSON("settingsTrueDarkMode", "false", applicationContext);
-        saveToJSON("showPatchNotes", "true", applicationContext);
-        saveToJSON("disablePatchNotesTemporary", "false", applicationContext);
-        saveToJSON("showReleaseNotesOnVeryFirstStart", "true", applicationContext);
-        saveToJSON("selectedSpinnerSetting", "System", applicationContext);
+    public void initializeSettings(Context applicationContext) {
+        if(readFromJSON("settingReleaseNotesSwitch", applicationContext) == null) {
+            saveToJSON("settingReleaseNotesSwitch", "true", applicationContext);
+        }
+        if(readFromJSON("settingsTrueDarkMode", applicationContext) == null) {
+            saveToJSON("settingsTrueDarkMode", "false", applicationContext);
+        }
+        if(readFromJSON("showPatchNotes", applicationContext) == null) {
+            saveToJSON("showPatchNotes", "true", applicationContext);
+        }
+        if(readFromJSON("disablePatchNotesTemporary", applicationContext) == null) {
+            saveToJSON("disablePatchNotesTemporary", "false", applicationContext);
+        }
+        if(readFromJSON("showReleaseNotesOnVeryFirstStart", applicationContext) == null) {
+            saveToJSON("showReleaseNotesOnVeryFirstStart", "true", applicationContext);
+        }
+        if(readFromJSON("selectedSpinnerSetting", applicationContext) == null) {
+            saveToJSON("selectedSpinnerSetting", "System", applicationContext);
+        }
+        if(readFromJSON("selectedTab", applicationContext) == null) {
+            saveToJSON("selectedTab", "1", applicationContext);
+        }
     }
 
 
@@ -207,7 +219,7 @@ public class DataManager {
      * This method checks if a file exists and creates it if it doesn't.
      */
     public void checkAndCreateFile() {
-        File file = new File(mainActivity.getFilesDir(), JSON_FILE);
+        File file = new File(clockActivity.getFilesDir(), JSON_FILE);
         if (!file.exists()) {
             try {
                 file.createNewFile();
@@ -216,7 +228,7 @@ public class DataManager {
             }
         }
         try {
-            FileInputStream fileIn = mainActivity.openFileInput(JSON_FILE);
+            FileInputStream fileIn = clockActivity.openFileInput(JSON_FILE);
             InputStreamReader inputReader = new InputStreamReader(fileIn);
             char[] inputBuffer = new char[100];
             int charRead;

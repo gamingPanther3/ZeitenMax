@@ -9,7 +9,8 @@
     <LinearLayout
         android:id="@+id/settings_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
 
         <TextView
             android:id="@+id/settings_title"
@@ -22,16 +23,76 @@
             android:text="Uhr"
             android:textColor="@color/colorBTNForegroundAccent"
             android:textSize="@dimen/button_size" />
+
+        <Button
+            android:id="@+id/add_new_clock"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0"
+            android:gravity="center_vertical|center_horizontal"
+            android:text="Hinzufügen  "
+            android:textSize="15sp"
+            android:drawableRight="@drawable/baseline_add_circle_24"/>
+
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/settings_layout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"/>
+
+            <!-- First TextView (time at my location) -->
+            <TextView
+                android:id="@+id/localTime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/hh_mm_ss_ss"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/clock_time_size"
+                android:textColor="@color/colorBTNForegroundAccent"/>
+
+            <!-- Second TextView (my location) -->
+            <TextView
+                android:id="@id/location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/land_bundesland_stadt"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/clock_location_size"
+                android:textColor="@color/colorBTNForegroundAccent"/>
+
+            <!-- Third TextView (date at my location) -->
+            <TextView
+                android:id="@+id/localDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/wochentag_tag_monat_jahr"
+                android:gravity="center_horizontal"
+                android:textSize="@dimen/clock_date_size"
+                android:textColor="@color/colorBTNForegroundAccent"/>
+
+        </LinearLayout>
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:gravity="bottom"
-
         android:paddingRight="5dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_weight="1">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"
