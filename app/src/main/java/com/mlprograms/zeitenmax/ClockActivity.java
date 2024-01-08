@@ -43,6 +43,10 @@ public class ClockActivity extends AppCompatActivity {
         checkAndSetTabLayoutPos();
         setUpListeners();
 
+        startClockUpdates();
+    }
+
+    private void startClockUpdates() {
         startLocalTimeUpdates();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -187,6 +191,7 @@ public class ClockActivity extends AppCompatActivity {
                     break;
                 case "1":
                     setContentView(R.layout.clock);
+                    startClockUpdates();
                     break;
                 case "2":
                     setContentView(R.layout.timer);
