@@ -5,7 +5,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
 import android.location.Address;
 import android.location.Geocoder;
@@ -13,12 +12,13 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.PopupWindow;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 public class ClockActivity extends AppCompatActivity {
 
@@ -43,7 +44,8 @@ public class ClockActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
-    private PopupWindow popupWindow;
+    Spinner addClock;
+    ArrayAdapter<String> idAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -196,13 +198,13 @@ public class ClockActivity extends AppCompatActivity {
 
         Button addNewClockButton = findViewById(R.id.add_new_clock);
         if (addNewClockButton != null) {
-            addNewClockButton.setOnClickListener(view -> showPopupWindow(view));
+            addNewClockButton.setOnClickListener(this::showPopupWindow);
         }
     }
 
     private void showPopupWindow(View view) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View popupView = inflater.inflate(R.layout.popup_layout, null);
+        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.popup_layout, null);
 
         popupView.setBackgroundColor(Color.TRANSPARENT);
 
@@ -218,7 +220,17 @@ public class ClockActivity extends AppCompatActivity {
 
         Button closePopupButton = popupView.findViewById(R.id.close_popup_button);
         closePopupButton.setOnClickListener(v -> popupWindow.dismiss());
+
+        Spinner addClock = popupView.findViewById(R.id.add_clock_spinner);
+
+        if (addClock != null) {
+            String[] idArray = TimeZone.getAvailableIDs();
+            ArrayAdapter<String> idAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, idArray);
+            idAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            addClock.setAdapter(idAdapter);
+        }
     }
+
 
     private void checkAndSetTabLayoutPos() {
 

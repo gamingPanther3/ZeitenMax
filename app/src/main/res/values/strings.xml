@@ -15,4 +15,8 @@
     <string name="popup_inhalt_hier">Popup-Inhalt hier</string>
     <string name="speichern">Speichern</string>
     <string name="abbrechen">Abbrechen</string>
+
+    <string name="clock_prompt">Wähle eine Region aus</string>
+    <string name="neue_uhr_hinzuf_gen">Neue Uhr hinzufügen</string>
+    <string-array name="add_clock_items"></string-array>
 </resources>

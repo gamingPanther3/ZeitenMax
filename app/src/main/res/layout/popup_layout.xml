@@ -28,7 +28,6 @@
             android:layout_marginRight="20sp"
             android:orientation="vertical">
 
-            <!-- Hier Spinner etc. einfügen -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -37,7 +36,7 @@
                     android:layout_gravity="center"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Neue Uhr hinzufügen"
+                    android:text="@string/neue_uhr_hinzuf_gen"
                     android:gravity="center"
                     android:textColor="@android:color/black"
                     android:autoSizeTextType="uniform"
@@ -46,6 +45,36 @@
                     android:ellipsize="end"/>
 
             </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Wähle eine Region aus."
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:autoSizeTextType="uniform"
+                android:textSize="17sp"
+                android:maxLines="1"
+                android:ellipsize="end"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"
+                android:layout_weight="1"/>
+
+            <Spinner
+                android:id="@+id/add_clock_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:prompt="@string/clock_prompt"
+                android:spinnerMode="dialog"
+                android:entries="@array/add_clock_items" />
 
             <View
                 android:layout_width="match_parent"
