@@ -10,6 +10,9 @@
     <string name="mode_prompt">Wähle einen Modus aus</string>
     <string name="keinen_standortzugriff">Keinen Standortzugriff !</string>
     <string name="wochentag_tag_monat_jahr">Wochentag. Tag. Monat Jahr</string>
-    <string name="land_bundesland_stadt">Land, Bundesland, Stadt</string>
+    <string name="land_bundesland_stadt">Land, (Bundesland), Stadt</string>
     <string name="hh_mm_ss_ss">HH:MM:SS.ss</string>
+    <string name="popup_inhalt_hier">Popup-Inhalt hier</string>
+    <string name="speichern">Speichern</string>
+    <string name="abbrechen">Abbrechen</string>
 </resources>

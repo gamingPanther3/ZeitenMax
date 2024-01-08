@@ -1,7 +1,11 @@
 package com.mlprograms.zeitenmax;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.icu.util.Calendar;
 import android.location.Address;
 import android.location.Geocoder;
@@ -9,6 +13,12 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,6 +43,7 @@ public class ClockActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -167,22 +178,50 @@ public class ClockActivity extends AppCompatActivity {
 
     private void setUpListeners() {
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-            @Override
-            public void onTabSelected(TabLayout.Tab tab) {
-                dataManager.saveToJSON("selectedTab", String.valueOf(tab.getPosition()), getApplicationContext());
-                checkAndSetTabLayoutPos();
-            }
+        if (tabLayout != null) {
+            tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+                @Override
+                public void onTabSelected(TabLayout.Tab tab) {
+                    dataManager.saveToJSON("selectedTab", String.valueOf(tab.getPosition()), getApplicationContext());
+                    checkAndSetTabLayoutPos();
+                }
 
-            @Override
-            public void onTabUnselected(TabLayout.Tab tab) {}
+                @Override
+                public void onTabUnselected(TabLayout.Tab tab) {}
 
-            @Override
-            public void onTabReselected(TabLayout.Tab tab) {}
-        });
+                @Override
+                public void onTabReselected(TabLayout.Tab tab) {}
+            });
+        }
+
+        Button addNewClockButton = findViewById(R.id.add_new_clock);
+        if (addNewClockButton != null) {
+            addNewClockButton.setOnClickListener(view -> showPopupWindow(view));
+        }
+    }
+
+    private void showPopupWindow(View view) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.popup_layout, null);
+
+        popupView.setBackgroundColor(Color.TRANSPARENT);
+
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+        popupWindow.setFocusable(true);
+
+        popupWindow.showAsDropDown(view, 30, -50);
+
+        Button closePopupButton = popupView.findViewById(R.id.close_popup_button);
+        closePopupButton.setOnClickListener(v -> popupWindow.dismiss());
     }
 
     private void checkAndSetTabLayoutPos() {
+
         final String value = dataManager.readFromJSON("selectedTab", getApplicationContext());
         if(value != null) {
             switch (value) {
