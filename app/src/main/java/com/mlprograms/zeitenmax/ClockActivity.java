@@ -15,7 +15,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,8 +30,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -207,12 +204,14 @@ public class ClockActivity extends AppCompatActivity {
         }
 
         Button addNewClockButton = findViewById(R.id.add_new_clock);
-        addNewClockButton.setOnClickListener(v -> showPopupWindow(addNewClockButton));
+        if(addNewClockButton != null) {
+            addNewClockButton.setOnClickListener(v -> showPopupWindow(addNewClockButton));
+        }
     }
 
     private void showPopupWindow(View view) {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.popup_layout, null);
+        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.new_clock_popup_layout, null);
 
         popupView.setBackgroundColor(Color.TRANSPARENT);
 
@@ -239,6 +238,11 @@ public class ClockActivity extends AppCompatActivity {
 
         if (addClock != null) {
             idArray = TimeZone.getAvailableIDs();
+
+            for (int i = 0; i < idArray.length; i++) {
+                idArray[i] = idArray[i].replace("/", ", ").replace("_", " ");
+            }
+
             Log.d("Spinner", "Anzahl der verfügbaren IDs: " + idArray.length);
 
             ArrayAdapter<String> idAdapter = new ArrayAdapter<>(
@@ -264,7 +268,7 @@ public class ClockActivity extends AppCompatActivity {
 
     private void saveNewTimeRegion() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.popup_layout, null);
+        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.new_clock_popup_layout, null);
         Spinner addClock = popupView.findViewById(R.id.add_clock_spinner);
 
         if (addClock != null) {
@@ -288,9 +292,17 @@ public class ClockActivity extends AppCompatActivity {
                 hour = "0" + hour;
             }
 
-            addCardToClockLayout(hour + ":" + minute + ":" + second,
-                    selectedTimeZoneLocation,
-                    findWeekday(year, month, day) + " " + day + ". " + getMonthAbbreviation(month) + " " + year);
+            try {
+                addCardToClockLayout(hour + ":" + minute + ":" + second,
+                        selectedTimeZoneLocation,
+                        findWeekday(year, month, day) + " " + day + ". " + getMonthAbbreviation(month) + " " + year);
+                final String name = String.valueOf(Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext()) + 1));
+
+                dataManager.saveToJSON(name, selectedTimeZoneLocation, getApplicationContext());
+                System.out.println("DEBUG:" + dataManager.readFromJSON(name, getApplicationContext()));
+            } catch (Exception e) {
+                System.out.println(e);
+            }
         }
     }
 
@@ -299,7 +311,7 @@ public class ClockActivity extends AppCompatActivity {
         if (clockLayout != null) {
             // Erstelle eine neue CardView basierend auf dem cardtemplate.xml
             CardView newCard = (CardView) getLayoutInflater().inflate(R.layout.cardtemplate, null);
-            newCard.setId(View.generateViewId());
+            newCard.setId(Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext())) + 1);
 
             // Setze die Layout-Parameter für die neue CardView
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -320,11 +332,52 @@ public class ClockActivity extends AppCompatActivity {
             locationTextView.setText(location);
 
             TextView dateTextView = newCard.findViewById(R.id.card_date);
-            dateTextView.setId(cardNumber + 1);
+            dateTextView.setId(cardNumber + 2);
             dateTextView.setText(date);
 
             // Füge die CardView zum ClockLayout hinzu
             clockLayout.addView(newCard);
+
+            // Füge den OnLongClickListener zur CardView hinzu
+            newCard.setOnLongClickListener(view -> {
+                showDeletePopupWindow(newCard); // Methode zum Anzeigen des Popup-Fensters für das Löschen
+                return true;
+            });
+        }
+    }
+
+    private void showDeletePopupWindow(View cardView) {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View popupView = inflater.inflate(R.layout.delete_clock_popup_layout, null);
+
+        PopupWindow popupWindow = new PopupWindow(
+                popupView,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                true
+        );
+        popupWindow.setFocusable(true);
+
+        Button deleteButton = popupView.findViewById(R.id.delete_clock);
+        Button cancelButton = popupView.findViewById(R.id.cancel_delete_clock);
+
+        deleteButton.setOnClickListener(v -> {
+            // Hier füge die Logik zum Löschen der Card hinzu
+            deleteCard(cardView);
+            popupWindow.dismiss();
+        });
+
+        cancelButton.setOnClickListener(v -> popupWindow.dismiss());
+
+        popupWindow.showAtLocation(cardView, Gravity.CENTER, 0, 0);
+    }
+
+    private void deleteCard(View cardView) {
+        // Hier füge die Logik zum Entfernen der Card aus dem Layout hinzu
+        if (cardView.getParent() instanceof ViewGroup) {
+            ViewGroup parentView = (ViewGroup) cardView.getParent();
+            parentView.removeView(cardView);
+            dataManager.saveToJSON(String.valueOf(cardView.getId()), null, getApplicationContext());
         }
     }
 

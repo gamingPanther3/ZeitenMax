@@ -18,5 +18,7 @@
 
     <string name="clock_prompt">Wähle eine Region aus</string>
     <string name="neue_uhr_hinzuf_gen">Neue Uhr hinzufügen</string>
+    <string name="achtung_du_stehst_kurz_davor_die_uhr_zu_l_schen_m_chtest_du_diesen_vorgang_trotzdem_durchf_hren">Achtung! Du stehst kurz davor, die Uhr zu löschen. Möchtest du diesen Vorgang trotzdem durchführen?</string>
+    <string name="l_schen">Löschen</string>
     <string-array name="add_clock_items"></string-array>
 </resources>
