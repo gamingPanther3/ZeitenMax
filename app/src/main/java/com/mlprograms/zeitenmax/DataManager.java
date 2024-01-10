@@ -29,6 +29,7 @@ import java.nio.file.Files;
  *  | disablePatchNotesTemporary       | true / false             |
  *  | showReleaseNotesOnVeryFirstStart | true / false             |
  *  | selectedTab                      | 0, 1, 2, 3, 4            |
+ *  | clockNumber                      | Integer                  |
  */
 public class DataManager {
 
@@ -211,6 +212,9 @@ public class DataManager {
         }
         if(readFromJSON("selectedTab", applicationContext) == null) {
             saveToJSON("selectedTab", "1", applicationContext);
+        }
+        if(readFromJSON("clockNumber", applicationContext) == null) {
+            saveToJSON("clockNumber", "0", applicationContext);
         }
     }
 

@@ -11,4 +11,6 @@
     <dimen name="clock_card_time_size">50sp</dimen>
     <dimen name="clock_card_location_size">15sp</dimen>
     <dimen name="clock_card_date_size">20sp</dimen>
+
+    <dimen name="card_corner_radius">50dp</dimen>
 </resources>

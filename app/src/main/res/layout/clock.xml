@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorBTNBackgroundAccent"
@@ -41,9 +40,11 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/settings_layout">
+        android:layout_below="@id/settings_layout"
+        android:layout_marginTop="0dp">
 
         <LinearLayout
+            android:id="@+id/clock_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -51,7 +52,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_weight="1"/>
+                android:layout_weight="1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -62,92 +63,39 @@
                     android:id="@+id/localTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/hh_mm_ss_ss"
                     android:gravity="center_horizontal"
-                    android:textSize="@dimen/clock_time_size"
-                    android:textColor="@color/colorBTNForegroundAccent"/>
+                    android:text="@string/hh_mm_ss_ss"
+                    android:textColor="@color/colorBTNForegroundAccent"
+                    android:textSize="@dimen/clock_time_size" />
 
                 <TextView
                     android:id="@id/location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/land_bundesland_stadt"
                     android:gravity="center_horizontal"
-                    android:textSize="@dimen/clock_location_size"
-                    android:textColor="@color/colorBTNForegroundAccent"/>
+                    android:text="@string/land_bundesland_stadt"
+                    android:textColor="@color/colorBTNForegroundAccent"
+                    android:textSize="@dimen/clock_location_size" />
 
                 <TextView
                     android:id="@+id/localDate"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/wochentag_tag_monat_jahr"
                     android:gravity="center_horizontal"
-                    android:textSize="@dimen/clock_date_size"
-                    android:textColor="@color/colorBTNForegroundAccent"/>
+                    android:text="@string/wochentag_tag_monat_jahr"
+                    android:textColor="@color/colorBTNForegroundAccent"
+                    android:textSize="@dimen/clock_date_size" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1sp"
                 android:layout_marginLeft="20sp"
-                android:layout_marginRight="20sp"
                 android:layout_marginTop="20dp"
+                android:layout_marginRight="20sp"
                 android:layout_marginBottom="15dp"
-                android:background="@android:color/darker_gray"/>
+                android:background="@android:color/darker_gray" />
 
-            <!-- CardView Template -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:cardCornerRadius="50dp"
-                android:layout_marginTop="10sp"
-                android:layout_marginBottom="10sp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                app:cardBackgroundColor="@color/white"
-                android:background="?android:attr/selectableItemBackgroundBorderless">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="center_horizontal"
-                        android:text="@string/hh_mm_ss_ss"
-                        android:textColor="@color/colorBTNForegroundAccent"
-                        android:textSize="@dimen/clock_card_time_size" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/land_bundesland_stadt"
-                        android:gravity="center_horizontal"
-                        android:textSize="@dimen/clock_card_location_size"
-                        android:textColor="@color/colorBTNForegroundAccent"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/wochentag_tag_monat_jahr"
-                        android:gravity="center_horizontal"
-                        android:textSize="@dimen/clock_card_date_size"
-                        android:textColor="@color/colorBTNForegroundAccent" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="30dp"
-                        android:layout_weight="1"/>
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
@@ -159,7 +107,7 @@
         android:gravity="bottom"
         android:paddingRight="5dp"
         android:orientation="horizontal"
-        android:layout_weight="1">
+        android:layout_weight="3">
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tab_layout"

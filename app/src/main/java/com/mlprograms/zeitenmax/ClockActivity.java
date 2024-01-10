@@ -1,5 +1,7 @@
 package com.mlprograms.zeitenmax;
 
+import java.text.DateFormatSymbols;
+import java.util.TimeZone;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -12,17 +14,25 @@ import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -36,7 +46,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-import java.util.TimeZone;
 
 public class ClockActivity extends AppCompatActivity {
 
@@ -44,8 +53,9 @@ public class ClockActivity extends AppCompatActivity {
 
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
-    Spinner addClock;
-    ArrayAdapter<String> idAdapter;
+    private String[] idArray;
+    private android.icu.util.TimeZone selectedTimeZoneId = null;
+    private String selectedTimeZoneLocation = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -197,9 +207,7 @@ public class ClockActivity extends AppCompatActivity {
         }
 
         Button addNewClockButton = findViewById(R.id.add_new_clock);
-        if (addNewClockButton != null) {
-            addNewClockButton.setOnClickListener(this::showPopupWindow);
-        }
+        addNewClockButton.setOnClickListener(v -> showPopupWindow(addNewClockButton));
     }
 
     private void showPopupWindow(View view) {
@@ -218,19 +226,123 @@ public class ClockActivity extends AppCompatActivity {
 
         popupWindow.showAsDropDown(view, 30, -50);
 
+        Spinner addClock = popupView.findViewById(R.id.add_clock_spinner);
+
         Button closePopupButton = popupView.findViewById(R.id.close_popup_button);
         closePopupButton.setOnClickListener(v -> popupWindow.dismiss());
 
-        Spinner addClock = popupView.findViewById(R.id.add_clock_spinner);
+        Button savePopupButton = popupView.findViewById(R.id.save_popup_button);
+        savePopupButton.setOnClickListener(v -> {
+            saveNewTimeRegion();
+            popupWindow.dismiss();
+        });
 
         if (addClock != null) {
-            String[] idArray = TimeZone.getAvailableIDs();
-            ArrayAdapter<String> idAdapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, idArray);
+            idArray = TimeZone.getAvailableIDs();
+            Log.d("Spinner", "Anzahl der verfügbaren IDs: " + idArray.length);
+
+            ArrayAdapter<String> idAdapter = new ArrayAdapter<>(
+                    getApplicationContext(), android.R.layout.simple_spinner_item, idArray);
             idAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             addClock.setAdapter(idAdapter);
+
+            addClock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
+                    selectedTimeZoneId = android.icu.util.TimeZone.getTimeZone(idArray[position]);
+                    ((TextView) parentView.getChildAt(0)).setTextColor(Color.BLACK);
+                    selectedTimeZoneLocation = parentView.getSelectedItem().toString();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parentView) {
+                    parentView.setSelection(1);
+                }
+            });
         }
     }
 
+    private void saveNewTimeRegion() {
+        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.popup_layout, null);
+        Spinner addClock = popupView.findViewById(R.id.add_clock_spinner);
+
+        if (addClock != null) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeZone(selectedTimeZoneId);
+
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH) + 1;
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+            String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+            String second = String.valueOf(calendar.get(Calendar.SECOND));
+
+            if(second.length() == 1) {
+                second = "0" + second;
+            }
+            if(minute.length() == 1) {
+                minute = "0" + minute;
+            }
+            if(hour.length() == 1) {
+                hour = "0" + hour;
+            }
+
+            addCardToClockLayout(hour + ":" + minute + ":" + second,
+                    selectedTimeZoneLocation,
+                    findWeekday(year, month, day) + " " + day + ". " + getMonthAbbreviation(month) + " " + year);
+        }
+    }
+
+    private void addCardToClockLayout(String time, String location, String date) {
+        LinearLayout clockLayout = findViewById(R.id.clock_layout);
+        if (clockLayout != null) {
+            // Erstelle eine neue CardView basierend auf dem cardtemplate.xml
+            CardView newCard = (CardView) getLayoutInflater().inflate(R.layout.cardtemplate, null);
+            newCard.setId(View.generateViewId());
+
+            // Setze die Layout-Parameter für die neue CardView
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT
+            );
+            layoutParams.setMargins(60, 20, 60, 20);
+            newCard.setLayoutParams(layoutParams);
+
+            // Setze die IDs für die TextViews in der neuen CardView
+            int cardNumber = Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext())) + 1;
+            TextView timeTextView = newCard.findViewById(R.id.card_time);
+            timeTextView.setId(cardNumber);
+            timeTextView.setText(time);
+
+            TextView locationTextView = newCard.findViewById(R.id.card_location);
+            locationTextView.setId(cardNumber + 1);
+            locationTextView.setText(location);
+
+            TextView dateTextView = newCard.findViewById(R.id.card_date);
+            dateTextView.setId(cardNumber + 1);
+            dateTextView.setText(date);
+
+            // Füge die CardView zum ClockLayout hinzu
+            clockLayout.addView(newCard);
+        }
+    }
+
+    public static String findWeekday(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month - 1, day);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("EE", Locale.getDefault());
+        Date date = calendar.getTime();
+        return sdf.format(date);
+    }
+
+    private static String getMonthAbbreviation(int monthNumber) {
+        DateFormatSymbols dfs = new DateFormatSymbols();
+        String[] monthAbbreviations = dfs.getShortMonths();
+
+        return monthAbbreviations[monthNumber - 1];
+    }
 
     private void checkAndSetTabLayoutPos() {
 
@@ -254,7 +366,7 @@ public class ClockActivity extends AppCompatActivity {
                     setContentView(R.layout.settings);
                     break;
             }
-            TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+            TabLayout tabLayout = findViewById(R.id.tab_layout);
             TabLayout.Tab tab = tabLayout.getTabAt(Integer.parseInt(value));
             assert tab != null;
             tab.select();
