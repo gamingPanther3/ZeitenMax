@@ -51,7 +51,7 @@ public class ClockActivity extends AppCompatActivity {
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private FusedLocationProviderClient fusedLocationClient;
     private String[] idArray;
-    private android.icu.util.TimeZone selectedTimeZoneId = null;
+    private String selectedTimeZoneId = null;
     private String selectedTimeZoneLocation = null;
 
     @Override
@@ -243,8 +243,6 @@ public class ClockActivity extends AppCompatActivity {
                 idArray[i] = idArray[i].replace("/", ", ").replace("_", " ");
             }
 
-            Log.d("Spinner", "Anzahl der verfügbaren IDs: " + idArray.length);
-
             ArrayAdapter<String> idAdapter = new ArrayAdapter<>(
                     getApplicationContext(), android.R.layout.simple_spinner_item, idArray);
             idAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -253,7 +251,7 @@ public class ClockActivity extends AppCompatActivity {
             addClock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                 @Override
                 public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    selectedTimeZoneId = android.icu.util.TimeZone.getTimeZone(idArray[position]);
+                    selectedTimeZoneId = parentView.getSelectedItem().toString();
                     ((TextView) parentView.getChildAt(0)).setTextColor(Color.BLACK);
                     selectedTimeZoneLocation = parentView.getSelectedItem().toString();
                 }
@@ -273,7 +271,16 @@ public class ClockActivity extends AppCompatActivity {
 
         if (addClock != null) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeZone(selectedTimeZoneId);
+
+            Log.e("Debug", selectedTimeZoneId);
+
+            android.icu.util.TimeZone selectedTimeZone =
+                    android.icu.util.TimeZone.getTimeZone(
+                            String.valueOf(selectedTimeZoneId)
+                                    .replace(", ", "/")
+                                    .replace(" ", "_"));
+
+            calendar.setTimeZone(selectedTimeZone);
 
             int year = calendar.get(Calendar.YEAR);
             int month = calendar.get(Calendar.MONTH) + 1;
@@ -282,13 +289,13 @@ public class ClockActivity extends AppCompatActivity {
             String minute = String.valueOf(calendar.get(Calendar.MINUTE));
             String second = String.valueOf(calendar.get(Calendar.SECOND));
 
-            if(second.length() == 1) {
+            if (second.length() == 1) {
                 second = "0" + second;
             }
-            if(minute.length() == 1) {
+            if (minute.length() == 1) {
                 minute = "0" + minute;
             }
-            if(hour.length() == 1) {
+            if (hour.length() == 1) {
                 hour = "0" + hour;
             }
 
@@ -305,6 +312,7 @@ public class ClockActivity extends AppCompatActivity {
             }
         }
     }
+
 
     private void addCardToClockLayout(String time, String location, String date) {
         LinearLayout clockLayout = findViewById(R.id.clock_layout);
