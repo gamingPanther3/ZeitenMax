@@ -19,12 +19,11 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,21 +52,125 @@ public class ClockActivity extends AppCompatActivity {
     private String[] idArray;
     private String selectedTimeZoneId = null;
     private String selectedTimeZoneLocation = null;
+    private AutoCompleteTextView addClockAutoComplete;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.clock);
 
+        //dataManager.deleteJSON(getApplicationContext());
         dataManager.initializeSettings(getApplicationContext());
         checkAndSetTabLayoutPos();
         setUpListeners();
 
         startClockUpdates();
+        updateTimesInCards();
+    }
+
+    private void updateTimesInCards() {
+        int clockNumber = Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext()));
+
+        if(clockNumber >= 1) {
+            for (int currentClock = 1; currentClock <= clockNumber; currentClock++) {
+                String id = String.valueOf(currentClock);
+                String location = dataManager.readFromJSON(id, getApplicationContext());
+
+                if (location != null && !location.isEmpty()) {
+                    Calendar calendar = Calendar.getInstance();
+                    android.icu.util.TimeZone selectedTimeZone =
+                            android.icu.util.TimeZone.getTimeZone(location.replace(", ", "/").replace(" ", "_"));
+                    calendar.setTimeZone(selectedTimeZone);
+
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH) + 1;
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                    String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+                    String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+                    String second = String.valueOf(calendar.get(Calendar.SECOND));
+
+                    if (second.length() == 1) {
+                        second = "0" + second;
+                    }
+                    if (minute.length() == 1) {
+                        minute = "0" + minute;
+                    }
+                    if (hour.length() == 1) {
+                        hour = "0" + hour;
+                    }
+
+                    updateCardTime(id, hour + ":" + minute + ":" + second);
+                }
+            }
+        }
+    }
+
+    private void updateCardTime(String cardId, String updatedTime) {
+        View cardView = findViewById(Integer.parseInt(cardId));
+        if (cardView != null) {
+            TextView timeTextView = cardView.findViewById(R.id.card_time);
+            if (timeTextView != null) {
+                timeTextView.setText(updatedTime);
+            }
+        }
+    }
+
+    private void createSavedClocks() {
+        new Thread(() -> {
+            Handler handler = new Handler(Looper.getMainLooper());
+
+            handler.post(() -> {
+                final int clockNumber = Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext()));
+                int currentClock = 0;
+                Log.e("Clock", "ClockNumber:" + clockNumber);
+                if (clockNumber >= 1) {
+                    for (int x = 0; x < clockNumber; x++) {
+                        currentClock++;
+                        final String value = dataManager.readFromJSON(String.valueOf(currentClock), getApplicationContext());
+                        if (value != null && !value.isEmpty()) {
+                            final String location = dataManager.readFromJSON(String.valueOf(currentClock), getApplicationContext());
+
+                            Calendar calendar = Calendar.getInstance();
+                            android.icu.util.TimeZone selectedTimeZone =
+                                    android.icu.util.TimeZone.getTimeZone(
+                                            String.valueOf(location)
+                                                    .replace(", ", "/")
+                                                    .replace(" ", "_"));
+
+                            Log.d("createSavedClocks", location.replace(", ", "/").replace(" ", "_"));
+                            calendar.setTimeZone(selectedTimeZone);
+
+                            int year = calendar.get(Calendar.YEAR);
+                            int month = calendar.get(Calendar.MONTH) + 1;
+                            int day = calendar.get(Calendar.DAY_OF_MONTH);
+                            String hour = String.valueOf(calendar.get(Calendar.HOUR_OF_DAY));
+                            String minute = String.valueOf(calendar.get(Calendar.MINUTE));
+                            String second = String.valueOf(calendar.get(Calendar.SECOND));
+
+                            if (second.length() == 1) {
+                                second = "0" + second;
+                            }
+                            if (minute.length() == 1) {
+                                minute = "0" + minute;
+                            }
+                            if (hour.length() == 1) {
+                                hour = "0" + hour;
+                            }
+
+                            addCardToClockLayout(hour + ":" + minute + ":" + second,
+                                    location,
+                                    findWeekday(year, month, day) + " " + day + ". " + getMonthAbbreviation(month) + " " + year);
+                        }
+                    }
+                } else {
+                    Log.e("card", "no card:" + clockNumber);
+                }
+            });
+        }).start();
     }
 
     private void startClockUpdates() {
-        startLocalTimeUpdates();
+        startTimeUpdates();
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
@@ -93,7 +196,7 @@ public class ClockActivity extends AppCompatActivity {
         }
     }
 
-    private void startLocalTimeUpdates() {
+    private void startTimeUpdates() {
         final Handler handler = new Handler(Looper.getMainLooper());
         handler.post(new Runnable() {
             @Override
@@ -225,7 +328,7 @@ public class ClockActivity extends AppCompatActivity {
 
         popupWindow.showAsDropDown(view, 30, -50);
 
-        Spinner addClock = popupView.findViewById(R.id.add_clock_spinner);
+        addClockAutoComplete = popupView.findViewById(R.id.add_clock_autocomplete);
 
         Button closePopupButton = popupView.findViewById(R.id.close_popup_button);
         closePopupButton.setOnClickListener(v -> popupWindow.dismiss());
@@ -236,7 +339,7 @@ public class ClockActivity extends AppCompatActivity {
             popupWindow.dismiss();
         });
 
-        if (addClock != null) {
+        if (addClockAutoComplete != null) {
             idArray = TimeZone.getAvailableIDs();
 
             for (int i = 0; i < idArray.length; i++) {
@@ -246,20 +349,11 @@ public class ClockActivity extends AppCompatActivity {
             ArrayAdapter<String> idAdapter = new ArrayAdapter<>(
                     getApplicationContext(), android.R.layout.simple_spinner_item, idArray);
             idAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            addClock.setAdapter(idAdapter);
+            addClockAutoComplete.setAdapter(idAdapter);
 
-            addClock.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
-                    selectedTimeZoneId = parentView.getSelectedItem().toString();
-                    ((TextView) parentView.getChildAt(0)).setTextColor(Color.BLACK);
-                    selectedTimeZoneLocation = parentView.getSelectedItem().toString();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> parentView) {
-                    parentView.setSelection(1);
-                }
+            addClockAutoComplete.setOnItemClickListener((parent, view1, position, id) -> {
+                selectedTimeZoneId = parent.getItemAtPosition(position).toString();
+                selectedTimeZoneLocation = parent.getItemAtPosition(position).toString();
             });
         }
     }
@@ -267,7 +361,7 @@ public class ClockActivity extends AppCompatActivity {
     private void saveNewTimeRegion() {
         LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         @SuppressLint("InflateParams") View popupView = inflater.inflate(R.layout.new_clock_popup_layout, null);
-        Spinner addClock = popupView.findViewById(R.id.add_clock_spinner);
+        AutoCompleteTextView addClock = popupView.findViewById(R.id.add_clock_autocomplete);
 
         if (addClock != null) {
             Calendar calendar = Calendar.getInstance();
@@ -280,6 +374,7 @@ public class ClockActivity extends AppCompatActivity {
                                     .replace(", ", "/")
                                     .replace(" ", "_"));
 
+            Log.d("saveNewTimeRegion", selectedTimeZoneId.replace(", ", "/").replace(" ", "_"));
             calendar.setTimeZone(selectedTimeZone);
 
             int year = calendar.get(Calendar.YEAR);
@@ -299,17 +394,14 @@ public class ClockActivity extends AppCompatActivity {
                 hour = "0" + hour;
             }
 
-            try {
-                addCardToClockLayout(hour + ":" + minute + ":" + second,
-                        selectedTimeZoneLocation,
-                        findWeekday(year, month, day) + " " + day + ". " + getMonthAbbreviation(month) + " " + year);
-                final String name = String.valueOf(Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext()) + 1));
+            addCardToClockLayout(hour + ":" + minute + ":" + second,
+                    selectedTimeZoneLocation,
+                    findWeekday(year, month, day) + " " + day + ". " + getMonthAbbreviation(month) + " " + year);
 
-                dataManager.saveToJSON(name, selectedTimeZoneLocation, getApplicationContext());
-                System.out.println("DEBUG:" + dataManager.readFromJSON(name, getApplicationContext()));
-            } catch (Exception e) {
-                System.out.println(e);
-            }
+            String currentClockNumber = dataManager.readFromJSON("clockNumber", getApplicationContext());
+            int newClockNumber = Integer.parseInt(currentClockNumber) + 1;
+            dataManager.saveToJSON("clockNumber", String.valueOf(newClockNumber), getApplicationContext());
+            dataManager.saveToJSON(String.valueOf(newClockNumber), selectedTimeZoneLocation, getApplicationContext());
         }
     }
 
@@ -319,7 +411,6 @@ public class ClockActivity extends AppCompatActivity {
         if (clockLayout != null) {
             // Erstelle eine neue CardView basierend auf dem cardtemplate.xml
             CardView newCard = (CardView) getLayoutInflater().inflate(R.layout.cardtemplate, null);
-            newCard.setId(Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext())) + 1);
 
             // Setze die Layout-Parameter für die neue CardView
             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -330,17 +421,20 @@ public class ClockActivity extends AppCompatActivity {
             newCard.setLayoutParams(layoutParams);
 
             // Setze die IDs für die TextViews in der neuen CardView
-            int cardNumber = Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext())) + 1;
+            final int clockNumber = Integer.parseInt(dataManager.readFromJSON("clockNumber", getApplicationContext())) + 1;
+
+            newCard.setId(clockNumber);
+
             TextView timeTextView = newCard.findViewById(R.id.card_time);
-            timeTextView.setId(cardNumber);
+            timeTextView.setId(View.generateViewId()); // Verwende View.generateViewId() für eindeutige IDs
             timeTextView.setText(time);
 
             TextView locationTextView = newCard.findViewById(R.id.card_location);
-            locationTextView.setId(cardNumber + 1);
+            locationTextView.setId(View.generateViewId());
             locationTextView.setText(location);
 
             TextView dateTextView = newCard.findViewById(R.id.card_date);
-            dateTextView.setId(cardNumber + 2);
+            dateTextView.setId(View.generateViewId());
             dateTextView.setText(date);
 
             // Füge die CardView zum ClockLayout hinzu
@@ -348,7 +442,7 @@ public class ClockActivity extends AppCompatActivity {
 
             // Füge den OnLongClickListener zur CardView hinzu
             newCard.setOnLongClickListener(view -> {
-                showDeletePopupWindow(newCard); // Methode zum Anzeigen des Popup-Fensters für das Löschen
+                showDeletePopupWindow(newCard);
                 return true;
             });
         }
@@ -415,6 +509,8 @@ public class ClockActivity extends AppCompatActivity {
                     break;
                 case "1":
                     setContentView(R.layout.clock);
+                    createSavedClocks();
+                    updateTimesInCards();
                     startClockUpdates();
                     break;
                 case "2":

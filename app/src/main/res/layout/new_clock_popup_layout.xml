@@ -68,14 +68,16 @@
                     android:layout_height="15dp"
                     android:layout_weight="1"/>
 
-                <Spinner
-                    android:id="@+id/add_clock_spinner"
+                <AutoCompleteTextView
+                    android:id="@+id/add_clock_autocomplete"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textColor="@android:color/black"
-                    android:prompt="@string/clock_prompt"
-                    android:spinnerMode="dialog"
-                    android:entries="@array/add_clock_items" />
+                    android:hint="@string/clock_prompt"
+                    android:inputType="text"
+                    android:textSize="20sp"
+                    android:textColorLink="@color/black"
+                    android:lineSpacingExtra="8sp"/>
 
                 <View
                     android:layout_width="match_parent"
